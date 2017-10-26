@@ -11,9 +11,9 @@
 @interface WZHChatService : NSObject{
     NSString * _compareTimeStr;
 }
-@property(nonatomic,strong)NSString * compareTimeStr;
+@property (strong, nonatomic) NSString *compareTimeStr;
 
-+(WZHChatService *)sharedInstance;
++ (WZHChatService *)sharedInstance;
 
-- (void)WZHChatServiceUrl:(NSString *)url dictionary:(NSDictionary *) dic success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)WZHChatServiceUrl:(NSString *)url dictionary:(NSDictionary *)dic success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 @end

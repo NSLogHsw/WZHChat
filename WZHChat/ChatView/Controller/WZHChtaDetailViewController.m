@@ -21,42 +21,40 @@
 #import "WZHPictureTableViewCell.h"
 #import "WZHInformationModel.h"
 
+@interface WZHChtaDetailViewController () <UITextViewDelegate, WZHToolBarDelegate, WZHEmotionViewdelegate, WZHMoreWayDelegate, WZHChatMessageDelegate, WZHPictureOriginalDelegate, WZHVoiceDelegate, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
-@interface WZHChtaDetailViewController () <UITextViewDelegate,WZHToolBarDelegate,WZHEmotionViewdelegate,WZHMoreWayDelegate,WZHChatMessageDelegate,WZHPictureOriginalDelegate,WZHVoiceDelegate,UIGestureRecognizerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@property (strong, nonatomic) UITextView *textView;
+@property (strong, nonatomic) UIButton *emotionBtn;
+@property (strong, nonatomic) WZHEmotionView *emotionview;
+@property (strong, nonatomic) WZHToolbarView *toolBarView;
+@property (strong, nonatomic) WZHMoreView *moreView;
+@property (assign, nonatomic) CGFloat keyBoardH;
+@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *informationArray;   //个人信息
+@property (strong, nonatomic) NSMutableArray *dataSourceArray;        //文本
+@property (strong, nonatomic) NSMutableArray *voiceArray;
+@property (strong, nonatomic) NSMutableArray *localPictureArray;     //本地图片
+@property (strong, nonatomic) NSMutableArray *webPictureArray;    //网络图片
+@property (strong, nonatomic) UIView *pressView;
+@property (strong, nonatomic) UIButton *btn_press;          //按住 说话按钮
+@property (strong, nonatomic) UIView *voiceView;
+@property (strong, nonatomic) NSMutableArray *albumSelectArr;     //相册已选相片数组
+@property (strong, nonatomic) UIImage *cameraSelectImage;          //相机拍照相片
+@property (strong, nonatomic) NSMutableArray *chatTypeArray;     //@"text"      @"voice"      @"picture"
+@property (assign, nonatomic) float voiceFloat;
+@property (strong, nonatomic) UIButton *btn_conversation;
+@property (strong, nonatomic) NSMutableArray *pictureBoolArray;       //网络图片：1   本地图片：2    其他：0
+@property (assign, nonatomic) CGFloat firstCellHeight;
 
-@property(nonatomic ,strong)UITextView *textView;
-@property(nonatomic ,strong)UIButton *emotionBtn;
-@property(nonatomic,strong)WZHEmotionView *emotionview;
-@property(nonatomic,strong)WZHToolbarView *toolBarView;
-@property(nonatomic,strong)WZHMoreView * moreView;
-@property(assign,nonatomic)CGFloat keyBoardH;
-@property(strong,nonatomic)UITableView *tableView;
-@property(nonatomic,strong)NSMutableArray * informationArray;   //个人信息
-@property(strong,nonatomic)NSMutableArray *dataSourceArray;        //文本
-@property(strong,nonatomic)NSMutableArray * voiceArray;
-@property(nonatomic,strong)NSMutableArray * localPictureArray;     //本地图片
-@property(nonatomic,strong)NSMutableArray * webPictureArray;    //网络图片
-@property(nonatomic,strong)UIView * pressView;
-@property(nonatomic,strong)UIButton * btn_press;
-@property(nonatomic,strong)UIView * voiceView;
-@property(nonatomic,strong)NSMutableArray * albumSelectArr;     //相册已选相片数组
-@property(nonatomic,strong)UIImage * cameraSelectImage;          //相机拍照相片
-@property(nonatomic,strong)NSMutableArray * chatTypeArray;     //@"text"      @"voice"      @"picture"
-@property(nonatomic,assign)float voiceFloat;
-@property(nonatomic,strong)UIButton * btn_conversation;
-@property(nonatomic,strong)NSMutableArray * pictureBoolArray;       //网络图片：1   本地图片：2    其他：0
-@property(nonatomic,assign)CGFloat firstCellHeight;
-
-@property(nonatomic,strong)UIAlertView * alert;
-@property(nonatomic,strong)UITapGestureRecognizer * recognizerTap;
+@property (strong, nonatomic) UIAlertView *alert;
+@property (strong, nonatomic) UITapGestureRecognizer *recognizerTap;
 
 @end
 
 @implementation WZHChtaDetailViewController
 
 //懒加载创建表情键盘
--(WZHEmotionView *)emotionview
-{
+- (WZHEmotionView *)emotionview {
     if (!_emotionview) {
         _emotionview = [[WZHEmotionView alloc]initWithFrame:emotionDownFrame];
         self.emotionview.IputView = self.toolBarView.textView;
@@ -65,56 +63,54 @@
     }
     return _emotionview;
 }
-
--(WZHMoreView *)moreView{
+- (WZHMoreView *)moreView {
     if (!_moreView) {
         self.moreView = [[WZHMoreView alloc] initWithFrame:emotionDownFrame];
         _moreView.userInteractionEnabled = YES;
         _moreView.delegate = self;
         [self.view addSubview:_moreView];
-        
     }
     return _moreView;
 }
--(NSMutableArray *)informationArray{
+- (NSMutableArray *)informationArray {
     if (!_informationArray) {
         _informationArray = [[NSMutableArray alloc] init];
     }
     return _informationArray;
 }
 
--(NSMutableArray *)dataSourceArray{
+- (NSMutableArray *)dataSourceArray {
     if (!_dataSourceArray) {
         _dataSourceArray = [[NSMutableArray alloc] init];
     }
     return _dataSourceArray;
 }
--(NSMutableArray *)localPictureArray{
+- (NSMutableArray *)localPictureArray {
     if (!_localPictureArray) {
         _localPictureArray = [[NSMutableArray alloc] init];
     }
     return _localPictureArray;
 }
--(NSMutableArray *)chatTypeArray{
+- (NSMutableArray *)chatTypeArray {
     if (!_chatTypeArray) {
         _chatTypeArray = [[NSMutableArray alloc] init];
     }
     return _chatTypeArray;
 }
--(NSMutableArray *)voiceArray{
+- (NSMutableArray *)voiceArray {
     if (!_voiceArray) {
         _voiceArray = [[NSMutableArray alloc] init];
     }
     return _voiceArray;
 }
 
--(NSMutableArray *)webPictureArray{
+- (NSMutableArray *)webPictureArray {
     if (!_webPictureArray) {
         _webPictureArray = [[NSMutableArray alloc] init];
     }
     return _webPictureArray;
 }
--(NSMutableArray *)pictureBoolArray{
+- (NSMutableArray *)pictureBoolArray {
     if (!_pictureBoolArray) {
         _pictureBoolArray = [[NSMutableArray alloc] init];
     }

@@ -8,37 +8,34 @@
 
 #import "WZHChatService.h"
 
-#define COMPARETIMESTR     @"compareTimeStr"
+static NSString * const COMPARETIMESTR = @"compareTimeStr";
+
 @implementation WZHChatService
 @synthesize compareTimeStr = _compareTimeStr;
 
-+(WZHChatService *)sharedInstance{
++ (WZHChatService *)sharedInstance {
     static WZHChatService *service = nil;
     if(service){
         return service;
     }
-    
     service = [[WZHChatService alloc] init];
     return service;
 }
 
-- (void)WZHChatServiceUrl:(NSString *)url dictionary:(NSDictionary *) dic success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure{
+- (void)WZHChatServiceUrl:(NSString *)url dictionary:(NSDictionary *)dic success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure {
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",InterHeard,url];
-    
     [PPNetworkHelper GET:urlStr parameters:dic success:^(id responseObject) {
         success(responseObject);
     } failure:^(NSError *error) {
         NSLog(@"%@",error);
         failure(error);
     }];
-    
 }
--(BOOL)accessUserDefaultWithKey:(NSString *)key{
+- (BOOL)accessUserDefaultWithKey:(NSString *)key {
     id isValue =GetUserValue(key);
     return (isValue) ? YES : NO;
 }
-
--(NSString *)compareTimeStr{
+- (NSString *)compareTimeStr {
     if (!_compareTimeStr) {
         BOOL isCompareTimeStr = [self accessUserDefaultWithKey:COMPARETIMESTR];
         _compareTimeStr =(isCompareTimeStr) ? GetUserValue(COMPARETIMESTR) : nil;
