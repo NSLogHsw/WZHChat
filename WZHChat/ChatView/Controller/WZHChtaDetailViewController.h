@@ -13,10 +13,10 @@
 
 @interface WZHChtaDetailViewController :AKBaseWithBaseViewController
 
-@property (strong, nonatomic) AVAudioSession *session;
-@property (strong, nonatomic) AVAudioRecorder *record;
-@property (assign, nonatomic) NSTimer *timer;
-@property (copy, nonatomic) NSString *filePath;
-@property (strong, nonatomic) AVAudioPlayer *player;
+@property (nonatomic, strong) AVAudioSession *session;
+@property (nonatomic, strong) AVAudioRecorder *record;
+@property (nonatomic, assign) NSTimer *timer;
+@property (nonatomic, copy) NSString *filePath;
+@property (nonatomic, strong) AVAudioPlayer *player;
 
 @end

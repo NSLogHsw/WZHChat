@@ -10,7 +10,7 @@
 
 @interface WZHChatMessage : NSObject
 
-@property(copy,nonatomic)NSString *text;
-@property(nonatomic, copy)NSMutableAttributedString *attributedText;
+@property (nonatomic, assign) NSString *text;
+@property (nonatomic, copy) NSMutableAttributedString *attributedText;
 
 @end

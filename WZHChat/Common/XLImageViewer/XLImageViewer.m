@@ -176,11 +176,11 @@ static CGFloat lineSpacing = 10.0f;
     UIViewContentMode contentMode = UIViewContentModeScaleToFill;
     if ([_imageContainer isKindOfClass:[UIImageView class]]) {
         contentMode = _imageContainer.contentMode;
-    }else{
+    }else {
         for (UIView *subView in _imageContainer.subviews) {
             if ([subView isKindOfClass:[UIImageView class]]) {
                 contentMode = subView.contentMode;
-            }else{
+            }else {
                 for (UIView *subView2 in subView.subviews) {
                     if ([subView2 isKindOfClass:[UIImageView class]]) {
                         contentMode = subView2.contentMode;

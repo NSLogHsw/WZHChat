@@ -10,7 +10,7 @@
 
 @interface WZHLocalPictureMessage : NSObject
 
-@property(nonatomic,strong)UIImage * originalImage;
-@property(nonatomic,strong)UIImage * thumbnailImage;
+@property (nonatomic, strong) UIImage *originalImage;
+@property (nonatomic, strong) UIImage *thumbnailImage;
 
 @end

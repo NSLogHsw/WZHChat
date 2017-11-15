@@ -179,7 +179,7 @@
         cell.icon.image = [UIImage imageNamed:@"LLImagePicker.bundle/AddMedia"];
         cell.videoImageView.hidden = YES;
         cell.deleteButton.hidden = YES;
-    }else{
+    }else {
         LLImagePickerModel *model = [[LLImagePickerModel alloc]init];
         model = _mediaArray[indexPath.row];
         if (!model.isVideo && model.imageUrlString) {
@@ -272,7 +272,7 @@
             }
                 break;
         }
-    }else{
+    }else {
         // 展示媒体
         _photos = [NSMutableArray array];
         MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
@@ -368,7 +368,7 @@
         
      [rootVC presentViewController:picker animated:YES completion:nil];
 
-    }else{
+    }else {
         [UIAlertController showAlertWithTitle:@"该设备不支持拍照" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
     }
 }

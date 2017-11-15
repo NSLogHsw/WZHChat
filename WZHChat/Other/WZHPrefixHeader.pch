@@ -15,7 +15,6 @@
 #define GetUserValue(A)  [[NSUserDefaults standardUserDefaults] valueForKey:A]
 
 #define StatusBar_Height [[UIApplication sharedApplication] statusBarFrame].size.height  //状态栏高度
-//#define screenH [UIScreen mainScreen].bounds.size.height
 #define UIFONT_SIZE [UIFont systemFontOfSize:14]
 #define IPHONE_WIDTH [UIScreen mainScreen].bounds.size.width
 #define IPHONE_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -29,35 +28,11 @@
 #define NAV_HEIGHT  (StatusBar_Height + 44)
 #define STATUS_HEIGHT       20
 
-#define AdapterX(width) (width*ScaleX_Num)
-#define AdapterY(height) (height*ScaleY_Num)
-
 #define UIFONT_SYS(fontsize) [UIFont systemFontOfSize:(fontsize)]
 
-#define random_Num  (arc4random() % 2)
-
-
-#define TCP_HOST      TCP_HOST01
-#define TCP_HOST01     @"192.168.1.18"     //局域网IP
-#define TCP_HOST02     @"202.65.219.3"     //广域网IP
-
-#define InterHeard    SERVER_01            //IP服务器环境
-#define SERVER_01     @"http://192.168.1.18/ak-sw-wyt/"        //局域网环境
-#define SERVER_02     @"http://www.ad-web.com/"                //广域网环境
-
-#define FILE_INTER    @"http://photo.ad-web.com/"            //广域网文件存储路径
-
-#define ACCOUNTNUM   AccountNum_01    //测试号
-#define   AccountNum_01     @"18888888888"
-#define   AccountNum_02     @"18866668888"
-#define   AccountNum_03     @"18888886666"
-#define   AccountNum_04     @"18819175391"    //子用户
-#define   AccountNum_05     @"18819175390"    //子用户
-#define   AccountNum_06     @"18378313860"    //管理员
-#define   AccountNum_07     @"15288019452"
-#define PASSWORD    @"123456"          //测试号密码
-
-
+#define HEADERIMAGE    @"http://img5.imgtn.bdimg.com/it/u=1712317116,2031280619&fm=27&gp=0.jpg"       //头像
+#define MEMBERID @"100"    //主人id
+#define random_Num  (arc4random() % 2)    //嘉宾：1    主人：0
 
 #define C000000 HEXCOLOR(0x000000)
 #define C222222 HEXCOLOR(0x222222)
@@ -119,7 +94,7 @@
 ///emotionView
 #define EMOJI_KEYBOARD_HEIGHT (4 * IPHONE_WIDTH * 0.0875 +(3 + 1) * ((IPHONE_WIDTH - 7 * IPHONE_WIDTH * 0.0875 ) / 8) + 20)
 #define emotionUpFrame CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT - (EMOJI_KEYBOARD_HEIGHT), IPHONE_WIDTH, EMOJI_KEYBOARD_HEIGHT)
-#define emotionDownFrame CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT, IPHONE_WIDTH, 0)
+#define emotionDownFrame CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT, 0, 0)
 #define emotionTipTime 0.25
 
 

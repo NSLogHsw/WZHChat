@@ -10,7 +10,7 @@
 
 @interface WZHVoiceMessage : NSObject
 
-@property(nonatomic,assign)NSString * filePathStr;
-@property(nonatomic,assign)NSString * voiceTimeStr;
+@property (nonatomic, assign) NSString *filePathStr;
+@property (nonatomic, assign) NSString *voiceTimeStr;
 
 @end

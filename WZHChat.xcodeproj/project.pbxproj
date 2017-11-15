@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		2DC11B3028183ACBE3C68485 /* libPods-WZHChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 525B207F5A3D7D59E6825E5A /* libPods-WZHChat.a */; };
+		F71880E91FBCA47400006A92 /* AudioConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = F71880D91FBCA47400006A92 /* AudioConverter.mm */; };
+		F71880EA1FBCA47400006A92 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F71880DF1FBCA47400006A92 /* libopencore-amrwb.a */; };
+		F71880EB1FBCA47400006A92 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F71880E01FBCA47400006A92 /* libopencore-amrnb.a */; };
+		F71880EC1FBCA47400006A92 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = F71880E51FBCA47400006A92 /* wav.mm */; };
+		F71880ED1FBCA47400006A92 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F71880E61FBCA47400006A92 /* amrFileCodec.mm */; };
+		F71880EF1FBCA60E00006A92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71880EE1FBCA60700006A92 /* UIKit.framework */; };
 		F7802E971F96E4DA005DFE80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7802E961F96E4DA005DFE80 /* Assets.xcassets */; };
 		F7802E9A1F96E4DA005DFE80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7802E981F96E4DA005DFE80 /* LaunchScreen.storyboard */; };
 		F7802ECA1F96E56F005DFE80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F7802EC51F96E56F005DFE80 /* main.m */; };
@@ -121,6 +127,19 @@
 		370C8C115070DF9A14C684C2 /* Pods-WZHChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WZHChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WZHChat/Pods-WZHChat.debug.xcconfig"; sourceTree = "<group>"; };
 		525B207F5A3D7D59E6825E5A /* libPods-WZHChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WZHChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2FA33C51CE903850ED68CB /* Pods-WZHChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WZHChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-WZHChat/Pods-WZHChat.release.xcconfig"; sourceTree = "<group>"; };
+		F71880D91FBCA47400006A92 /* AudioConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioConverter.mm; sourceTree = "<group>"; };
+		F71880DB1FBCA47400006A92 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
+		F71880DC1FBCA47400006A92 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
+		F71880DD1FBCA47400006A92 /* AudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioConverter.h; sourceTree = "<group>"; };
+		F71880DF1FBCA47400006A92 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
+		F71880E01FBCA47400006A92 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		F71880E21FBCA47400006A92 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
+		F71880E31FBCA47400006A92 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
+		F71880E51FBCA47400006A92 /* wav.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = wav.mm; sourceTree = "<group>"; };
+		F71880E61FBCA47400006A92 /* amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amrFileCodec.mm; sourceTree = "<group>"; };
+		F71880E71FBCA47400006A92 /* wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wav.h; sourceTree = "<group>"; };
+		F71880E81FBCA47400006A92 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
+		F71880EE1FBCA60700006A92 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F7802E871F96E4DA005DFE80 /* WZHChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WZHChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7802E961F96E4DA005DFE80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7802E991F96E4DA005DFE80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -275,6 +294,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F71880EF1FBCA60E00006A92 /* UIKit.framework in Frameworks */,
+				F71880EA1FBCA47400006A92 /* libopencore-amrwb.a in Frameworks */,
+				F71880EB1FBCA47400006A92 /* libopencore-amrnb.a in Frameworks */,
 				2DC11B3028183ACBE3C68485 /* libPods-WZHChat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,9 +330,61 @@
 		C1F03C89714432189E6B0D0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F71880EE1FBCA60700006A92 /* UIKit.framework */,
 				525B207F5A3D7D59E6825E5A /* libPods-WZHChat.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F71880D81FBCA47400006A92 /* AudioConverter */ = {
+			isa = PBXGroup;
+			children = (
+				F71880D91FBCA47400006A92 /* AudioConverter.mm */,
+				F71880DA1FBCA47400006A92 /* opencore-amrwb */,
+				F71880DD1FBCA47400006A92 /* AudioConverter.h */,
+				F71880DE1FBCA47400006A92 /* lib */,
+				F71880E11FBCA47400006A92 /* opencore-amrnb */,
+				F71880E41FBCA47400006A92 /* amrwapper */,
+			);
+			path = AudioConverter;
+			sourceTree = "<group>";
+		};
+		F71880DA1FBCA47400006A92 /* opencore-amrwb */ = {
+			isa = PBXGroup;
+			children = (
+				F71880DB1FBCA47400006A92 /* if_rom.h */,
+				F71880DC1FBCA47400006A92 /* dec_if.h */,
+			);
+			path = "opencore-amrwb";
+			sourceTree = "<group>";
+		};
+		F71880DE1FBCA47400006A92 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				F71880DF1FBCA47400006A92 /* libopencore-amrwb.a */,
+				F71880E01FBCA47400006A92 /* libopencore-amrnb.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		F71880E11FBCA47400006A92 /* opencore-amrnb */ = {
+			isa = PBXGroup;
+			children = (
+				F71880E21FBCA47400006A92 /* interf_dec.h */,
+				F71880E31FBCA47400006A92 /* interf_enc.h */,
+			);
+			path = "opencore-amrnb";
+			sourceTree = "<group>";
+		};
+		F71880E41FBCA47400006A92 /* amrwapper */ = {
+			isa = PBXGroup;
+			children = (
+				F71880E51FBCA47400006A92 /* wav.mm */,
+				F71880E61FBCA47400006A92 /* amrFileCodec.mm */,
+				F71880E71FBCA47400006A92 /* wav.h */,
+				F71880E81FBCA47400006A92 /* amrFileCodec.h */,
+			);
+			path = amrwapper;
 			sourceTree = "<group>";
 		};
 		F7802E7E1F96E4DA005DFE80 = {
@@ -382,6 +456,7 @@
 		F7802EC11F96E56F005DFE80 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F71880D81FBCA47400006A92 /* AudioConverter */,
 				F7BE80AC1FA179F4008416A0 /* MWPhotoBrowser */,
 				F7BE809F1FA177C4008416A0 /* XLImageViewer */,
 				F7BE80951FA177A0008416A0 /* TimeDispose */,
@@ -838,6 +913,7 @@
 				F7802EE61F96E692005DFE80 /* UIView+WZHExtension.m in Sources */,
 				F7BE80EC1FA179F4008416A0 /* MWTapDetectingImageView.m in Sources */,
 				F7BE80AB1FA177C4008416A0 /* XLImageViewer.m in Sources */,
+				F71880ED1FBCA47400006A92 /* amrFileCodec.mm in Sources */,
 				F7BE80881FA17577008416A0 /* UIImageView+LLMediaExt.m in Sources */,
 				F7BE80EA1FA179F4008416A0 /* MWZoomingScrollView.m in Sources */,
 				F7802ECB1F96E56F005DFE80 /* AppDelegate.m in Sources */,
@@ -852,6 +928,7 @@
 				F7BE80A81FA177C4008416A0 /* XLImageLoading.m in Sources */,
 				F7BE80691FA17439008416A0 /* WZHVoiceMessage.m in Sources */,
 				F7BE808B1FA17577008416A0 /* UIViewController+LLMediaExt.m in Sources */,
+				F71880E91FBCA47400006A92 /* AudioConverter.mm in Sources */,
 				F7802EFD1F96E6AD005DFE80 /* NSAttributedString+WZHEmojiExtension.m in Sources */,
 				F7802ED21F96E626005DFE80 /* WZHChtaDetailViewController.m in Sources */,
 				F7802EFA1F96E6AD005DFE80 /* WZHTextAttachment.m in Sources */,
@@ -863,6 +940,7 @@
 				F7BE809C1FA177A1008416A0 /* NSDate+Category.m in Sources */,
 				F7BE809D1FA177A1008416A0 /* HHCalender.m in Sources */,
 				F7BE80F01FA179F4008416A0 /* MWGridCell.m in Sources */,
+				F71880EC1FBCA47400006A92 /* wav.mm in Sources */,
 				F7BE80581FA17418008416A0 /* WZHChatViewCell.m in Sources */,
 				F7BE808A1FA17577008416A0 /* UIImage+LLGif.m in Sources */,
 				F7BE80671FA17439008416A0 /* WZHInformationModel.m in Sources */,
@@ -1041,6 +1119,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/WZHChat/Other/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/WZHChat/Common/AudioConverter/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "---.WZHChat";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1058,6 +1140,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/WZHChat/Other/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/WZHChat/Common/AudioConverter/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "---.WZHChat";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

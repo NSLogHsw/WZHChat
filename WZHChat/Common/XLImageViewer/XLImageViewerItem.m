@@ -112,13 +112,13 @@ static CGFloat minPanLength = 100.0f;
     
     if (imageFrame.size.width < self.bounds.size.width) {
         imageFrame.origin.x = (self.bounds.size.width - imageFrame.size.width)/2.0f;
-    }else{
+    }else {
         imageFrame.origin.x = 0;
     }
     
     if (imageFrame.size.height < self.bounds.size.height) {
         imageFrame.origin.y = (self.bounds.size.height - imageFrame.size.height)/2.0f;
-    }else{
+    }else {
         imageFrame.origin.y = 0;
     }
     
@@ -230,7 +230,7 @@ static CGFloat minPanLength = 100.0f;
         _collectionView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
         if (_isStart && _imageView.image) {
             _imageView.frame = _anchorFrame;
-        }else{self.alpha = 0;}
+        }else {self.alpha = 0;}
     }completion:^(BOOL finished) {
         //通知回调
         _finishHideBlock();
@@ -254,7 +254,7 @@ static CGFloat minPanLength = 100.0f;
             [UIView animateWithDuration:0.35 animations:^{
                 _scrollView.contentInset = UIEdgeInsetsZero;
             }];
-        }else{
+        }else {
             [UIView animateWithDuration:0.35 animations:^{
                 //设置移除动画
                 CGRect frame = _imageView.frame;
@@ -269,7 +269,7 @@ static CGFloat minPanLength = 100.0f;
                 _scrollView.contentInset = UIEdgeInsetsZero;
             }];
         }
-    }else{
+    }else {
         //拖拽过程中逐渐改变透明度
         _scrollView.contentInset = UIEdgeInsetsMake(-_scrollView.contentOffset.y, 0, 0, 0);
         CGFloat alpha = 1 - ABS(_scrollView.contentOffset.y/(_scrollView.bounds.size.height));

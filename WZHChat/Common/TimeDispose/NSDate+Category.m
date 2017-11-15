@@ -127,7 +127,7 @@
         [dateArr addObject:nowDate];
         [dateArr addObject:[NSString stringWithFormat:@"%ld-%@",[year integerValue]-1,@"01"]];
         [dateArr addObject:[NSString stringWithFormat:@"%ld-%@",[year integerValue]-1,@"12"]];
-    }else{
+    }else {
         [dateArr addObject:nowDate];
         [dateArr addObject:[NSString stringWithFormat:@"%ld-%02ld",(long)[year integerValue],[month integerValue]-1]];
         [dateArr addObject:[NSString stringWithFormat:@"%ld-%02ld",(long)[year integerValue],[month integerValue]-2]];
@@ -257,7 +257,7 @@
     else if (result == NSOrderedAscending){
         NSLog(@"Date1较早");
         return -1;
-    }else{
+    }else {
         NSLog(@"Both dates are the same");
         return 0;
     }
@@ -273,7 +273,7 @@
     else if (result == NSOrderedAscending){
         NSLog(@"Date1较早");
         return -1;
-    }else{
+    }else {
         NSLog(@"Both dates are the same");
         return 0;
     }
@@ -306,7 +306,7 @@
         
         return NO;
         
-    }else{
+    }else {
         
         return YES;
     }

@@ -10,7 +10,8 @@
 
 @interface WZHWebPictureMessage : NSObject
 
-@property(nonatomic,assign)NSString * originalStr;
-@property(nonatomic,assign)NSString * thumbnailStr;
+@property (nonatomic, assign) NSString *originalStr;
+@property (nonatomic, assign) NSString *thumbnailStr;
+@property (nonatomic, assign) NSString *informationId;     //消息ID
 
 @end

@@ -10,10 +10,11 @@
 
 @interface WZHInformationModel : NSObject
 
-@property(nonatomic,assign)NSString * timeStr;      //消息时间
-@property(nonatomic,assign)NSString * headerStr;    //头像
-@property(nonatomic,assign)NSString * nameStr;      //昵称
-@property(nonatomic,assign)NSString * guestStr;      //非本人：1   本人：0
-@property(nonatomic,assign)NSString * memberIdStr;
+@property (nonatomic, assign) NSString *timeStr;      //消息时间
+@property (nonatomic, assign) NSString *headerStr;    //头像
+@property (nonatomic, assign) NSString *nameStr;      //昵称
+@property (nonatomic, assign) NSString *guestStr;      //非本人：1   本人：0
+@property (nonatomic, assign) NSString *memberIdStr;     //用户ID
+@property (nonatomic, assign) NSString *informationId;     //消息ID
 
 @end

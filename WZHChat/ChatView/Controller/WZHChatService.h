@@ -9,11 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface WZHChatService : NSObject{
-    NSString * _compareTimeStr;
+    NSString *_compareTimeStr;
 }
-@property (strong, nonatomic) NSString *compareTimeStr;
+@property (nonatomic, strong) NSString *compareTimeStr;
 
 + (WZHChatService *)sharedInstance;
 
-- (void)WZHChatServiceUrl:(NSString *)url dictionary:(NSDictionary *)dic success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 @end

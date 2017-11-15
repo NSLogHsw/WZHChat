@@ -54,7 +54,7 @@
             if (success) {
                 !completion ?  :completion(fileName, screenshot, filePath);
             }
-        }else{
+        }else {
             //不保存，那么就只有返回NSData
             !completion ?  : completion(fileName, screenshot, videoData);
         }
@@ -98,7 +98,7 @@
         //当前处理方式：本地的视频 直接返回路径，非本地的也不存储到本地，直接返回data
         if (success) {
             !completion ?  : completion(mediaName, videoPath);
-        }else{
+        }else {
             NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:videoPath]];
             !completion ?  : completion(mediaName, videoData);
         }

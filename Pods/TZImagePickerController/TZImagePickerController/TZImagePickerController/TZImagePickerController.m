@@ -109,7 +109,7 @@
     
     if (self.isStatusBarDefault) {
         [UIApplication sharedApplication].statusBarStyle = iOS7Later ? UIStatusBarStyleDefault : UIStatusBarStyleBlackOpaque;
-    }else{
+    }else {
         [UIApplication sharedApplication].statusBarStyle = iOS7Later ? UIStatusBarStyleLightContent : UIStatusBarStyleBlackOpaque;
     }
 }

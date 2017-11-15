@@ -6,9 +6,9 @@
 //  Copyright © 2017年 吳梓杭. All rights reserved.
 //
 
-#import "WZHChatService.h"
+#define COMPARETIMESTR @"compareTimeStr"
 
-static NSString * const COMPARETIMESTR = @"compareTimeStr";
+#import "WZHChatService.h"
 
 @implementation WZHChatService
 @synthesize compareTimeStr = _compareTimeStr;
@@ -22,15 +22,6 @@ static NSString * const COMPARETIMESTR = @"compareTimeStr";
     return service;
 }
 
-- (void)WZHChatServiceUrl:(NSString *)url dictionary:(NSDictionary *)dic success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure {
-    NSString *urlStr = [NSString stringWithFormat:@"%@%@",InterHeard,url];
-    [PPNetworkHelper GET:urlStr parameters:dic success:^(id responseObject) {
-        success(responseObject);
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-        failure(error);
-    }];
-}
 - (BOOL)accessUserDefaultWithKey:(NSString *)key {
     id isValue =GetUserValue(key);
     return (isValue) ? YES : NO;
