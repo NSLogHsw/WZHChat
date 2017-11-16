@@ -458,7 +458,6 @@
 		F7802EC11F96E56F005DFE80 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				F78AE12D1FBD73B6003970F4 /* RecorderButton */,
 				F71880D81FBCA47400006A92 /* AudioConverter */,
 				F7BE80AC1FA179F4008416A0 /* MWPhotoBrowser */,
 				F7BE809F1FA177C4008416A0 /* XLImageViewer */,
@@ -530,13 +529,6 @@
 				F7BE80511FA17417008416A0 /* WZHVoiceTableViewCell.m */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		F78AE12D1FBD73B6003970F4 /* RecorderButton */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = RecorderButton;
 			sourceTree = "<group>";
 		};
 		F7BE806E1FA17577008416A0 /* LLImagePicker */ = {
