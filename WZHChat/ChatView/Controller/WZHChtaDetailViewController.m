@@ -1007,7 +1007,7 @@
         [_player stop];
         _player = nil;
     }
-    NSLog(@"按下");
+//    NSLog(@"按下");
     [btn setTitle:@"松开 结束" forState:UIControlStateNormal];
     NSURL *url=[NSURL fileURLWithPath:_filePath];
     
@@ -1102,7 +1102,6 @@
     [_record updateMeters];//刷新音量数据
     CGFloat lowPassResults = pow(10, (0.05 * [_record peakPowerForChannel:0]));
     //  根据音量大小选择显示图片  图片 小-》大
-    NSLog(@"%f",lowPassResults);
     if (0.01 < lowPassResults <=0.05) {
         [micImg setImage:[UIImage imageNamed:@"voice_1"]];
     }else if (0.05 < lowPassResults <=0.1) {
@@ -1148,7 +1147,7 @@
 }
 
 - (void)voiceBtnClickCancel:(UIButton *)btn {//意外取消
-    NSLog(@"意外取消");
+//    NSLog(@"意外取消");
     [btn setTitle:@"松开 结束" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
     [view removeFromSuperview];
@@ -1156,7 +1155,6 @@
         [_record stop];
         [_record deleteRecording];
     }
-    
     _record = nil;
     if (_timer.isValid) {//判断timer是否在线程中
         [_timer invalidate];
@@ -1164,12 +1162,12 @@
     _timer=nil;
 }
 - (void)voiceBtnClickUpInside:(UIButton *)btn {//点击(录音完成)
-    NSLog(@"_filePath === %@  count == %f",_filePath,_voiceFloat);
+//    NSLog(@"_filePath === %@  count == %f",_filePath,_voiceFloat);
     UIView * view = [self.view viewWithTag:101];
     NSString *amrSavePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *name = [NSString stringWithFormat:@"%d.amr",(int)[NSDate date].timeIntervalSince1970];
     amrSavePath=[amrSavePath stringByAppendingPathComponent:name];
-    NSLog(@"点击");
+//    NSLog(@"点击");
     
     [AudioConverter convertWavToAmrAtPath:_filePath amrSavePath:amrSavePath asynchronize:YES completion:^(BOOL success, NSString * _Nullable resultPath) {
         if (success) {
@@ -1201,7 +1199,7 @@
 }
 
 - (void)voiceBtnClickDragExit:(UIButton *)btn {//拖出
-    NSLog(@"拖出");
+//    NSLog(@"拖出");
     [btn setTitle:@"按住 说话" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
     UIImageView * micImg = [view viewWithTag:135];
@@ -1211,7 +1209,7 @@
 }
 
 - (void)voiceBtnClickUpOutside:(UIButton *)btn {//外部手势抬起
-    NSLog(@"外部手势抬起");
+//    NSLog(@"外部手势抬起");
     [btn setTitle:@"按住 说话" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
     [view removeFromSuperview];
@@ -1227,7 +1225,7 @@
 }
 
 - (void)voiceBtnClickDragEnter:(UIButton *)btn {//拖回
-    NSLog(@"拖回");
+//    NSLog(@"拖回");
     [btn setTitle:@"松开 结束" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
     UIImageView * micImg = [view viewWithTag:135];
