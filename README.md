@@ -51,4 +51,4 @@ mMediaRecorder.setAudioEncodingBitRate(64);
 <p>![WZHChat](FlatPatternmaking/00000.png) ![WZHChat](FlatPatternmaking/00001.png)</p>
 <p>![WZHChat](FlatPatternmaking/00002.png) ![WZHChat](FlatPatternmaking/00003.png)</p>
 <p>![WZHChat](FlatPatternmaking/00004.png) ![WZHChat](FlatPatternmaking/00005.png)</p>
-<p>![WZHChat](FlatPatternmaking/00006.png)</p>
+<p>![WZHChat](FlatPatternmaking/00006.jpg)</p>
