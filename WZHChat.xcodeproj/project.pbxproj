@@ -893,8 +893,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WZHChat/Pods-WZHChat-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
-				$PODS_CONFIGURATION_BUILD_DIR/ZSLRecorderButton/ZSLRecorderButton.bundle,
+				"$PODS_CONFIGURATION_BUILD_DIR/ZSLRecorderButton/ZSLRecorderButton.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (

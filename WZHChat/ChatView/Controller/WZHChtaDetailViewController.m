@@ -65,6 +65,12 @@
 @property (nonatomic, strong) NSMutableArray *webThumbnailArray;    //网络图片缩小图，防止刷新本地数据奔溃(历史消息)
 @property (nonatomic, strong) NSMutableArray *webOriginalArray;   //网络图片放大，防止刷新本地数据奔溃(历史消息)
 
+//本地历史消息
+@property (nonatomic, strong) FMDatabase *originalData;
+@property (nonatomic, strong) NSMutableArray *historyGatherArr;   //历史消息集合
+@property (nonatomic, assign) NSInteger hostory_Num;
+@property (nonatomic, assign) NSInteger hostory_Id;    //消息模拟ID
+
 @end
 
 @implementation WZHChtaDetailViewController
@@ -162,6 +168,12 @@
     }
     return _webThumbnailArray;
 }
+-(NSMutableArray *)historyGatherArr{
+    if (!_historyGatherArr) {
+        _historyGatherArr = [[NSMutableArray alloc] init];
+    }
+    return _historyGatherArr;
+}
 
 - (void)viewDidUnload {
     [super viewDidUnload];
@@ -171,10 +183,31 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //数据的路径，放在沙盒的cache下面
+    NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+    NSString * originalStr = [NSString stringWithFormat:@"HistoryMessage,sqlite"];
+    NSString *filePath = [cacheDir stringByAppendingPathComponent:originalStr];
+    NSLog(@"%@",filePath);
+    //创建并且打开一个数据库
+    self.originalData = [FMDatabase databaseWithPath:filePath];
+    if ([_originalData open]) {
+        NSLog(@"打开数据库成功");
+    } else {
+        NSLog(@"打开数据库失败");
+    }
+    BOOL result = [_originalData executeUpdate:@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"];
+    if (result) {
+        NSLog(@"创建表成功");
+    } else {
+        NSLog(@"创建表失败");
+    }
+    self.hostory_Num = 1;
+    self.hostory_Id = 1000;
     self.navigationItem.title = @"聊天";
-    NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.webOriginalArray.count + self.webThumbnailArray.count;            //解决不执行懒加载，对程序毫无意义
+    NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.webOriginalArray.count + self.webThumbnailArray.count + self.historyGatherArr.count;            //解决不执行懒加载，对程序毫无意义
     _voiceBtnArray = [[NSMutableArray alloc] init];
     _fistTimeStr = [NSString string];          //第一个cell的时间加载，用于刷新历史消息
+    
     
     [self setNotificationCenter];     //键盘监控
     [self creatTableView];
@@ -184,6 +217,16 @@
     self.voiceView = [[UIView alloc] init];
     self.voiceView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.voiceView];
+    
+    __weak __typeof(self) weakSelf = self;
+    // 下拉刷新
+    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf historyMessage];
+        _hostory_Num ++;
+        // 结束刷新
+        [weakSelf.tableView.mj_header endRefreshing];
+    }];
+    [self.tableView.mj_header beginRefreshing];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -214,6 +257,60 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(quitKeyboard)];
     tap.delegate = self;
     [tableview addGestureRecognizer:tap];
+}
+
+- (void)historyMessage {
+    //查询整个表
+    FMResultSet * resultSet = [self.originalData executeQuery:@"SELECT * FROM t_Contacts ORDER BY id DESC"];
+    int i = 0;
+    while ([resultSet next]) {
+        if (i == 0) {
+            [_informationArray removeAllObjects];
+            [_audioArray removeAllObjects];
+            [_voiceArray removeAllObjects];
+            [_chatTypeArray removeAllObjects];
+            [_dataSourceArray removeAllObjects];
+            [_localPictureArray removeAllObjects];
+            [_webPictureArray removeAllObjects];
+            [_pictureBoolArray removeAllObjects];
+            [_webOriginalArray removeAllObjects];
+            [self.tableView reloadData];
+        }
+        NSString * idStr = [resultSet objectForColumn:@"id"];
+        NSLog(@"idStr ==== %@ \n",idStr);
+        
+        if (i < _hostory_Num * 5) {
+            self.allRefreshBool = YES;
+            NSInteger typeStr = [[resultSet objectForColumn:@"type"] intValue];
+            NSInteger fromIdStr = [[resultSet objectForColumn:@"fromId"] intValue];
+            NSInteger message_Num = [MEMBERID intValue];
+            [self nowTimeEqualJudge:[resultSet objectForColumn:@"createTime"]];
+            if (typeStr == 1) {
+                if (fromIdStr == message_Num) {
+                    [self sendMessageWithText:[resultSet objectForColumn:@"content"] TimeStr:@"" NameStr:@"主人" HeaderStr:HEADERIMAGE GuestStr:@"0" MemberId:MEMBERID InformationId:[resultSet objectForColumn:@"id"]];
+                }else{
+                    [self sendMessageWithText:[resultSet objectForColumn:@"content"] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:GUESTHEADERIMAGE GuestStr:@"1" MemberId:GUESTMEMBERID InformationId:[resultSet objectForColumn:@"id"]];
+                }
+            }else if (typeStr == 2) {
+                //注明：这里看不到效果，因为访问历史消息图片默认访问网络图片，没必要访问本地图片
+                if (fromIdStr == message_Num) {
+                    NSLog(@"%@",[resultSet objectForColumn:@"original"]);
+                    [self sendWebPictureMessageWithLocalStr:@"0" OriginalStr:[resultSet objectForColumn:@"original"] ThumbnailStr:[resultSet objectForColumn:@"thumbnail"] TimeStr:@"" NameStr:@"主人" HeaderStr:HEADERIMAGE GuestStr:@"0" MemberId:MEMBERID InformationId:[resultSet objectForColumn:@"id"]];
+                }else{
+                    [self sendWebPictureMessageWithLocalStr:@"0" OriginalStr:[resultSet objectForColumn:@"original"] ThumbnailStr:[resultSet objectForColumn:@"thumbnail"] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:GUESTHEADERIMAGE GuestStr:@"1" MemberId:GUESTMEMBERID InformationId:[resultSet objectForColumn:@"id"]];
+                }
+            }else if (typeStr  == 3) {
+                if (fromIdStr == message_Num) {
+                    [self sendVoiceMessageWithFilePathStr:[resultSet objectForColumn:@"audio"] VoiceTimeStr:[resultSet objectForColumn:@"audioTimeSecond"] TimeStr:@"" NameStr:@"主人" HeaderStr:HEADERIMAGE GuestStr:@"0" MemberId:MEMBERID InformationId:[resultSet objectForColumn:@"id"]];
+                }else{
+                    [self sendVoiceMessageWithFilePathStr:[resultSet objectForColumn:@"audio"] VoiceTimeStr:[resultSet objectForColumn:@"audioTimeSecond"] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:GUESTHEADERIMAGE GuestStr:@"1" MemberId:GUESTMEMBERID InformationId:[resultSet objectForColumn:@"id"]];
+                }
+            }
+            i ++;
+        }else {
+            break;
+        }
+    }
 }
 
 - (void)quitKeyboard {
@@ -436,7 +533,25 @@
                 NSLog(@"%@",model.image);
                 _allRefreshBool = NO;
                 [self nowTimeEqualJudge:[NSDate getNowDate5]];
-                [self sendLocalPictureMessageWithLocalStr:@"1" OriginalImage:model.image ThumbnailImage:model.image TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+                NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
+                
+                [self sendLocalPictureMessageWithLocalStr:@"1" OriginalImage:model.image ThumbnailImage:model.image TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+                
+                //@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"
+                // 创建插入语句
+                NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                BOOL result1;
+                if ([guestStr intValue] == 0) {
+                    result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"2", HEADERIMAGE, @"主人", MEMBERID, GUESTMEMBERID, [NSDate getNowDate5], @"", @"", @"", model.image, model.image];
+                }else {
+                    result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"2", GUESTHEADERIMAGE, @"WOHANGO", GUESTMEMBERID, MEMBERID, [NSDate getNowDate5], @"", @"", @"", model.image, model.image];
+                }
+                _hostory_Id ++;
+                if (result1) {
+                    NSLog(@"添加成功");
+                } else {
+                    NSLog(@"添加失败");
+                }
             }
         }];
     }
@@ -449,7 +564,24 @@
                 _allRefreshBool = NO;
                 [self nowTimeEqualJudge:[NSDate getNowDate5]];
                 self.cameraSelectImage = model.image;
-                [self sendLocalPictureMessageWithLocalStr:@"1" OriginalImage:model.image ThumbnailImage:model.image TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+                NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
+                [self sendLocalPictureMessageWithLocalStr:@"1" OriginalImage:model.image ThumbnailImage:model.image TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+                
+                //@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"
+                // 创建插入语句
+                NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                BOOL result1;
+                if ([guestStr intValue] == 0) {
+                    result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"2", HEADERIMAGE, @"主人", MEMBERID, GUESTMEMBERID, [NSDate getNowDate5], @"", @"", @"", model.image, model.image];
+                }else {
+                    result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"2", GUESTHEADERIMAGE, @"WOHANGO", GUESTMEMBERID, MEMBERID, [NSDate getNowDate5], @"", @"", @"", model.image, model.image];
+                }
+                _hostory_Id ++;
+                if (result1) {
+                    NSLog(@"添加成功");
+                } else {
+                    NSLog(@"添加失败");
+                }
             }
         }];
     }
@@ -495,7 +627,22 @@
         NSString *messageText = [[_textView.textStorage getPlainString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         _allRefreshBool = NO;
         [self nowTimeEqualJudge:[NSDate getNowDate5]];
-        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+        NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
+        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+        // 创建插入语句
+        NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        BOOL result1;
+        if ([guestStr intValue] == 0) {
+            result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"1", HEADERIMAGE, @"主人", MEMBERID, GUESTMEMBERID, [NSDate getNowDate5], messageText, @"", @"", @"", @""];
+        }else {
+            result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"1", GUESTHEADERIMAGE, @"WOHANGO", GUESTMEMBERID, MEMBERID, [NSDate getNowDate5], messageText, @"", @"", @"", @""];
+        }
+        _hostory_Id ++;
+        if (result1) {
+            NSLog(@"添加成功");
+        } else {
+            NSLog(@"添加失败");
+        }
         return NO;
     }
     return YES;
@@ -507,7 +654,22 @@
         //解析处理
         NSString *messageText = [[_textView.textStorage getPlainString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         [self nowTimeEqualJudge:[NSDate getNowDate5]];
-        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+        NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
+        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+        // 创建插入语句
+        NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        BOOL result1;
+        if ([guestStr intValue] == 0) {
+            result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"1", HEADERIMAGE, @"主人", MEMBERID, GUESTMEMBERID, [NSDate getNowDate5], messageText, @"", @"", @"", @""];
+        }else {
+            result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"1", GUESTHEADERIMAGE, @"WOHANGO", GUESTMEMBERID, MEMBERID, [NSDate getNowDate5], messageText, @"", @"", @"", @""];
+        }
+        _hostory_Id ++;
+        if (result1) {
+            NSLog(@"添加成功");
+        } else {
+            NSLog(@"添加失败");
+        }
     }else{
         [self textViewDidChange:self.textView];
         //判断输入框有内容让发送按钮变颜色
@@ -603,7 +765,7 @@
     voiceModel.voiceTimeStr = voiceTimeStr;
     if (_allRefreshBool == YES) {             //预留刷新历史消息
         [_informationArray insertObject:infomationModel atIndex:0];
-        [_audioArray insertObject:_docDirPath atIndex:0];
+        [_audioArray insertObject:filePathStr atIndex:0];
         [_voiceArray insertObject:voiceModel atIndex:0];
         [_chatTypeArray insertObject:@"voice" atIndex:0];
         [_dataSourceArray insertObject:model atIndex:0];
@@ -1185,7 +1347,22 @@
                 int result = (int)roundf(_voiceFloat);      //时间四舍五入
                 _allRefreshBool = NO;
                 [self nowTimeEqualJudge:[NSDate getNowDate5]];
-                [self sendVoiceMessageWithFilePathStr:amrSavePath VoiceTimeStr:[NSString stringWithFormat:@"%d",result] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+                NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
+                [self sendVoiceMessageWithFilePathStr:amrSavePath VoiceTimeStr:[NSString stringWithFormat:@"%d",result] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+                // 创建插入语句
+                NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                BOOL result1;
+                if ([guestStr intValue] == 0) {
+                    result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"3", HEADERIMAGE, @"主人", MEMBERID, GUESTMEMBERID, [NSDate getNowDate5], @"", [NSString stringWithFormat:@"%d",result], amrSavePath, @"", @""];
+                }else {
+                    result1 = [_originalData executeUpdate:insertSql, [NSString stringWithFormat:@"%ld",_hostory_Id], @"3", GUESTHEADERIMAGE, @"WOHANGO", GUESTMEMBERID, MEMBERID, [NSDate getNowDate5], @"", [NSString stringWithFormat:@"%d",result], amrSavePath, @"", @""];
+                }
+                _hostory_Id ++;
+                if (result1) {
+                    NSLog(@"添加成功");
+                } else {
+                    NSLog(@"添加失败");
+                }
             }
         }
     }];

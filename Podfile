@@ -13,6 +13,10 @@ target 'WZHChat' do
 
   pod 'SDWebImage', '~> 4.1.0'
 
+  pod 'FMDB', '~> 2.7.2'
+
+  pod 'MJRefresh', '~> 3.1.14'
+
   pod 'ACAlertController', '~> 1.0.0'
 
   pod 'MBProgressHUD', '~> 0.9.2'

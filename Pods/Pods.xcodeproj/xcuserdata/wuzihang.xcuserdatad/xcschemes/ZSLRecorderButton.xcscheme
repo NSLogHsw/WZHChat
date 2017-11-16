@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'A995A819E04B0DD07CFC1568C739913B'
+               BlueprintIdentifier = 'DB8D3B5A2A5C02C93A92125371C642CA'
                BlueprintName = 'ZSLRecorderButton'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libZSLRecorderButton.a'>
