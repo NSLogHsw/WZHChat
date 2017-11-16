@@ -35,7 +35,6 @@ static NSDictionary *_emojiStaticImages;
 @property (nonatomic, strong) UIImageView  *emotonViewPageFive;
 @property (nonatomic, strong) UIImageView  *emotonViewPageSix;
 @property (nonatomic, strong) UIImageView  *emotonViewPageSeven;
-@property (nonatomic, strong) UIImageView  *emotonViewPageEight;
 @property (nonatomic, strong) UIScrollView  *pageView;        //用来放上边页面的scrollview
 @property (nonatomic, strong) UIFont *font;       //字体大小，用来计算表情尺寸
 @property (nonatomic, assign) CGFloat gap;        //间距
@@ -66,21 +65,19 @@ static NSDictionary *_emojiStaticImages;
 //初始化方法
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        NSLog(@"self.number == %@",self.number);
         [self initEmojiDatas];
         //创建滚动视图
         [self creatScorllView];
         //创建表情视图
         [self creatEmotionViews];
         //创建按钮
-        [self creatPageViewOneBtns];
-        [self ceartPageViewTwoBtns];
-        [self ceartPageViewThreeBtns];
-        [self ceartPageViewFourBtns];
-        [self ceartPageViewFiveBtns];
-        [self ceartPageViewSixBtns];
-        [self ceartPageViewSeveneBtns];
-        [self ceartPageViewEightBtns];
+        [self creatPageViewBtnsWithEmojiTag:1 DeleteTag:211 EmotonView:self.emotonViewPageOne];
+        [self creatPageViewBtnsWithEmojiTag:21 DeleteTag:212 EmotonView:self.emotonViewPageTwo];
+        [self creatPageViewBtnsWithEmojiTag:41 DeleteTag:213 EmotonView:self.emotonViewPageThree];
+        [self creatPageViewBtnsWithEmojiTag:61 DeleteTag:214 EmotonView:self.emotonViewPageFour];
+        [self creatPageViewBtnsWithEmojiTag:81 DeleteTag:215 EmotonView:self.emotonViewPageFive];
+        [self creatPageViewBtnsWithEmojiTag:101 DeleteTag:216 EmotonView:self.emotonViewPageSix];
+        [self creatPageViewBtnsWithEmojiTag:121 DeleteTag:217 EmotonView:self.emotonViewPageSeven];
         //创建pagecontrol
         [self creatPageControl];
         //创建底部按钮栏
@@ -157,16 +154,16 @@ static NSDictionary *_emojiStaticImages;
 }
 
 //创建表情按钮（多个页面的）
-- (void)creatPageViewOneBtns {
+- (void)creatPageViewBtnsWithEmojiTag:(NSInteger)emojiTag DeleteTag:(NSInteger)deleteTag EmotonView:(UIImageView *)emotonView {
     int row = 1;
     CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
     for (int i = 0; i < emojiCount; i ++) {
         row = i / rowCount + 1;
         UIButton *btn = [[UIButton alloc]init];
         btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 1;
+        btn.tag = i + emojiTag;
         if (i == emojiCount - 1) {
-            btn.tag = 211;
+            btn.tag = deleteTag;
             [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
             btn.size = CGSizeMake(emotionW + space, emotionW + space);
             CGFloat X = btn.x;
@@ -178,12 +175,12 @@ static NSDictionary *_emojiStaticImages;
             [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
         }
-        [self.emotonViewPageOne addSubview:btn];
+        [emotonView addSubview:btn];
     }
     UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
     self.btnsBar = btnsBar;
     btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageOne addSubview:btnsBar];
+    [emotonView addSubview:btnsBar];
     
     UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
     [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
@@ -194,257 +191,6 @@ static NSDictionary *_emojiStaticImages;
     [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
     self.sendBtn = sendBtn;
     [_btnsBar addSubview:sendBtn];
-}
-
-- (void)ceartPageViewTwoBtns {
-    int row = 1;
-    CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
-    for (int i = 0; i < emojiCount; i ++) {
-        row = i / rowCount + 1;
-        UIButton *btn = [[UIButton alloc]init];
-        btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 21;
-        if (i == emojiCount - 1) {
-            btn.tag = 212;
-            [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
-            btn.size = CGSizeMake(emotionW + space, emotionW + space);
-            CGFloat X = btn.x;
-            CGFloat Y = btn.y;
-            btn.x = X - space / 3;
-            btn.y = Y - space / 3;
-            [btn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        }else {
-            [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.emotonViewPageTwo addSubview:btn];
-    }
-    UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
-    self.btnsBar = btnsBar;
-    btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageTwo addSubview:btnsBar];
-    
-    UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendBtn.tag = 3456;
-    [sendBtn addTarget:self action:@selector(emotionBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
-    [sendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
-    self.sendBtn = sendBtn;
-    [_btnsBar addSubview:sendBtn];
-}
-
-- (void)ceartPageViewThreeBtns {
-    int row = 1;
-    CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
-    for (int i = 0; i < emojiCount; i ++) {
-        row = i / rowCount + 1;
-        UIButton *btn = [[UIButton alloc]init];
-        btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 41;
-        if (i == emojiCount - 1) {
-            btn.tag = 213;
-            [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
-            btn.size = CGSizeMake(emotionW + space, emotionW + space);
-            CGFloat X = btn.x;
-            CGFloat Y = btn.y;
-            btn.x = X - space / 3;
-            btn.y = Y - space / 3;
-            [btn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        }else {
-            [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.emotonViewPageThree addSubview:btn];
-    }
-    UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
-    self.btnsBar = btnsBar;
-    btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageThree addSubview:btnsBar];
-    
-    UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendBtn.tag = 3456;
-    [sendBtn addTarget:self action:@selector(emotionBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
-    [sendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
-    self.sendBtn = sendBtn;
-    [_btnsBar addSubview:sendBtn];
-}
-
-- (void)ceartPageViewFourBtns {
-    int row = 1;
-    CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
-    for (int i = 0; i < emojiCount; i ++) {
-        row = i / rowCount + 1;
-        UIButton *btn = [[UIButton alloc]init];
-        btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 61;
-        if (i == emojiCount - 1) {
-            btn.tag = 214;
-            [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            btn.size = CGSizeMake(emotionW + space, emotionW + space);
-            CGFloat X = btn.x;
-            CGFloat Y = btn.y;
-            btn.x = X - space / 3;
-            btn.y = Y - space / 3;
-        }else {
-            [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.emotonViewPageFour addSubview:btn];
-    }
-    UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
-    self.btnsBar = btnsBar;
-    btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageFour addSubview:btnsBar];
-    
-    UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendBtn.tag = 3456;
-    [sendBtn addTarget:self action:@selector(emotionBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
-    [sendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
-    self.sendBtn = sendBtn;
-    [_btnsBar addSubview:sendBtn];
-}
--(void)ceartPageViewFiveBtns{
-    int row = 1;
-    CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
-    for (int i = 0; i < emojiCount; i ++) {
-        row = i / rowCount + 1;
-        UIButton *btn = [[UIButton alloc]init];
-        btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 81;
-        if (i == emojiCount - 1) {
-            btn.tag = 215;
-            [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
-            btn.size = CGSizeMake(emotionW + space, emotionW + space);
-            CGFloat X = btn.x;
-            CGFloat Y = btn.y;
-            btn.x = X - space / 3;
-            btn.y = Y - space / 3;
-            [btn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        }else {
-            [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.emotonViewPageFive addSubview:btn];
-    }
-    UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
-    self.btnsBar = btnsBar;
-    btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageFive addSubview:btnsBar];
-    
-    UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendBtn.tag = 3456;
-    [sendBtn addTarget:self action:@selector(emotionBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
-    [sendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
-    self.sendBtn = sendBtn;
-    [_btnsBar addSubview:sendBtn];
-}
--(void)ceartPageViewSixBtns{
-    int row = 1;
-    CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
-    for (int i = 0; i < emojiCount; i ++) {
-        row = i / rowCount + 1;
-        UIButton *btn = [[UIButton alloc]init];
-        btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 101;
-        if (i == emojiCount - 1) {
-            btn.tag = 216;
-            [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
-            btn.size = CGSizeMake(emotionW + space, emotionW + space);
-            CGFloat X = btn.x;
-            CGFloat Y = btn.y;
-            btn.x = X - space / 3;
-            btn.y = Y - space / 3;
-            [btn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        }else {
-            [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.emotonViewPageSix addSubview:btn];
-    }
-    UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
-    self.btnsBar = btnsBar;
-    btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageSix addSubview:btnsBar];
-    
-    UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendBtn.tag = 3456;
-    [sendBtn addTarget:self action:@selector(emotionBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
-    [sendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
-    self.sendBtn = sendBtn;
-    [_btnsBar addSubview:sendBtn];
-}
--(void)ceartPageViewSeveneBtns{
-    int row = 1;
-    CGFloat space = (IPHONE_WIDTH - rowCount * emotionW) / (rowCount + 1);
-    for (int i = 0; i < emojiCount; i ++) {
-        row = i / rowCount + 1;
-        UIButton *btn = [[UIButton alloc]init];
-        btn.frame = CGRectMake((1 + i - (rowCount * (row - 1))) * space + (i - (rowCount * (row - 1))) * emotionW, space * row + (row - 1) * emotionW, emotionW, emotionW);
-        btn.tag = i + 121;
-        if (i == emojiCount - 1) {
-            btn.tag = 217;
-            [btn setImage:[UIImage imageNamed:@"backDelete"] forState:UIControlStateNormal];
-            btn.size = CGSizeMake(emotionW + space, emotionW + space);
-            CGFloat X = btn.x;
-            CGFloat Y = btn.y;
-            btn.x = X - space / 3;
-            btn.y = Y - space / 3;
-            [btn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        }else {
-            [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"[%ld]",(long)btn.tag]] forState:UIControlStateNormal];
-            [btn addTarget:self action:@selector(insertEmoji:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.emotonViewPageSeven addSubview:btn];
-    }
-    UIButton *btnsBar = [[UIButton alloc]initWithFrame:CGRectMake(0, rows * emotionW +(rows + 1) * self.gap, IPHONE_WIDTH, emotionW + 5)];
-    self.btnsBar = btnsBar;
-    btnsBar.userInteractionEnabled = YES;
-    [self.emotonViewPageSeven addSubview:btnsBar];
-    
-    UIButton *sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(IPHONE_WIDTH * 6 / 7, 0, IPHONE_WIDTH / 7, _btnsBar.frame.size.height)];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendBtn.tag = 3456;
-    [sendBtn addTarget:self action:@selector(emotionBtnDidClick:) forControlEvents:UIControlEventTouchUpInside];
-    [sendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [sendBtn setBackgroundImage:[UIImage createImageWithColor:EEEEEE] forState:UIControlStateNormal];
-    self.sendBtn = sendBtn;
-    [_btnsBar addSubview:sendBtn];
-}
--(void)ceartPageViewEightBtns{
-    NSMutableArray * moreImageArray = [NSMutableArray arrayWithObjects:@"icon_Album",@"icon_Photograph", nil];
-    NSMutableArray * moreTitleArray = [NSMutableArray arrayWithObjects:@"相册",@"拍摄", nil];
-    for (int i = 0; i < moreImageArray.count; i ++) {
-        UIButton * btn_moreWay = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.moreWayButton = btn_moreWay;
-        btn_moreWay.frame = CGRectMake((IPHONE_WIDTH - 4 * 40 * ScaleX_Num) / 5 + ((IPHONE_WIDTH - 4 * 40 * ScaleX_Num) / 5 + 40 * ScaleX_Num) * i , 30 * ScaleY_Num, 40 * ScaleX_Num, 40 * ScaleY_Num);
-        [btn_moreWay setImage:[UIImage imageNamed:moreImageArray[i]] forState:UIControlStateNormal];
-        [btn_moreWay addTarget:self action:@selector(clickMoreWayBtn:) forControlEvents:UIControlEventTouchUpInside];
-        btn_moreWay.tag = 901 + i;
-        [self.emotonViewPageEight addSubview:btn_moreWay];
-        
-        UILabel * lab_titile = [[UILabel alloc] initWithFrame:CGRectMake((IPHONE_WIDTH - 4 * 40 * ScaleX_Num) / 5 + ((IPHONE_WIDTH - 4 * 40 * ScaleX_Num) / 5 + 40 * ScaleX_Num) * i , CGRectGetMaxY(btn_moreWay.frame) + 5 * ScaleY_Num, 40 * ScaleX_Num, 14 * ScaleY_Num)];
-        lab_titile.text = moreTitleArray[i];
-        lab_titile.textColor = CCCCCC;
-        lab_titile.font = UIFONT_SYS(14);
-        lab_titile.textAlignment = NSTextAlignmentCenter;
-        [self.emotonViewPageEight addSubview:lab_titile];
-    }
 }
 
 //表情视图
@@ -468,8 +214,6 @@ static NSDictionary *_emojiStaticImages;
             self.emotonViewPageSix = emotionPageView;
         }else if (i == 6) {
             self.emotonViewPageSeven = emotionPageView;
-        }else if (i == 7) {
-            self.emotonViewPageEight = emotionPageView;
         }
         [_pageView addSubview:emotionPageView];
     }

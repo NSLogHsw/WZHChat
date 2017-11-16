@@ -22,7 +22,6 @@ typedef void(^VoidBlock)(void);
 @property (nonatomic, copy) NSString *imageUrl;
 //imageView的ContentMode，与Superview相同
 @property (nonatomic, assign) UIViewContentMode imageViewContentMode;
-
 //保存CollectionView
 @property (nonatomic, weak) UICollectionView *collectionView;
 
@@ -30,7 +29,6 @@ typedef void(^VoidBlock)(void);
 -(void)addHideBlockStart:(VoidBlock)start finish:(VoidBlock)finish cancle:(VoidBlock)cancle;
 //显示放大动画
 -(void)showEnlargeAnimation;
-
 -(void)saveImage;
 
 @end

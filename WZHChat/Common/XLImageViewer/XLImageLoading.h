@@ -12,17 +12,12 @@
 
 //加载进度
 @property (nonatomic,assign) CGFloat progress;
-
 //提示信息
 @property (nonatomic,copy) NSArray *message;
 
-+(XLImageLoading*)showInView:(UIView *)view;
-
-+(XLImageLoading*)showAlertInView:(UIView*)view message:(NSString*)message;
-
--(void)show;
-
--(void)hide;
-
++ (XLImageLoading*)showInView:(UIView *)view;
++ (XLImageLoading*)showAlertInView:(UIView*)view message:(NSString*)message;
+- (void)show;
+- (void)hide;
 
 @end

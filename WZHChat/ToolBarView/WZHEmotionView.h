@@ -27,7 +27,5 @@
 @property (nonatomic, strong) UIButton *sendBtn;         //发送按钮
 @property (nonatomic, strong) UIButton *emojiBtn;        //底部条的按钮
 @property (nonatomic, assign) id <WZHEmotionViewdelegate> delegate;
-@property (nonatomic, strong) UIButton *moreWayButton;
-@property (nonatomic, strong) NSString *number;
 
 @end

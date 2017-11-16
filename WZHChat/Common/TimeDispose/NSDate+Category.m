@@ -18,7 +18,7 @@
  @param DateStr 字符串年月日 例如:2017-09-01 14:30:50
  @return NSDate类型时间
  */
-+ (NSDate *)getNowTimeStr2:(NSString *)DateStr{
++ (NSDate *)getNowTimeStr2:(NSString *)DateStr {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
     NSDate *date = [dateFormatter dateFromString:DateStr];
@@ -30,7 +30,7 @@
  
  @return 当前日期 年-月-日 星期 例如:2017-09-01 星期五
  */
-+ (NSString *)getNowDate{
++ (NSString *)getNowDate {
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     

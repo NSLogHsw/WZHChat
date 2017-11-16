@@ -32,46 +32,44 @@
 @property (nonatomic, strong) WZHMoreView *moreView;
 @property (nonatomic, assign) CGFloat keyBoardH;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray *informationArray;   //个人信息
-@property (nonatomic, strong) NSMutableArray *dataSourceArray;        //文本
-@property (nonatomic, strong) NSMutableArray *voiceArray;
-@property (nonatomic, strong) NSMutableArray *localPictureArray;     //本地图片
-@property (nonatomic, strong) NSMutableArray *webPictureArray;    //网络图片
-@property (nonatomic, strong) NSMutableArray *webThumbnailArray;    //网络图片缩小图，防止刷新本地数据奔溃
-@property (nonatomic, strong) NSMutableArray *webOriginalArray;   //网络图片放大，防止刷新本地数据奔溃
-@property (nonatomic, strong) UIView *pressView;
-@property (nonatomic, strong) UIButton *btn_press;
+@property (nonatomic, assign) BOOL allRefreshBool;     //YES:整体刷新(历史消息)   NO:局部刷新
+@property (nonatomic, strong) NSString *fistTimeStr;    //整体刷新后第一个cell时间(历史消息)
+
+@property (nonatomic, strong) UIButton *btn_press;       //录音按钮
 @property (nonatomic, strong) UIView *voiceView;
 @property (nonatomic, strong) NSMutableArray *albumSelectArr;     //相册已选相片数组
 @property (nonatomic, strong) UIImage *cameraSelectImage;          //相机拍照相片
-@property (nonatomic, strong) NSMutableArray *chatTypeArray;     //@"text"      @"voice"      @"picture"
 @property (nonatomic, assign) float voiceFloat;
-@property (nonatomic, strong) UIButton *btn_conversation;
-@property (nonatomic, strong) NSMutableArray *pictureBoolArray;       //网络图片：1   本地图片：2    其他：0
-@property (nonatomic, assign) CGFloat firstCellHeight;
-
-@property (nonatomic, strong) UIAlertView *alert;
+@property (nonatomic, strong) UIAlertView *alert;         //长按弹窗
 @property (nonatomic, strong) UITapGestureRecognizer *recognizerTap;
+@property (nonatomic, strong) NSString *timeJudgeStr;    //时间比较保留与剔除
+
+@property (nonatomic, strong) NSMutableArray *timeArray;         //消息事件
+@property (nonatomic, strong) NSMutableArray *chatTypeArray;     //@"text"      @"voice"      @"picture"
+@property (nonatomic, strong) NSMutableArray *informationArray;   //个人信息集合
+
+//文本消息
+@property (nonatomic, strong) NSMutableArray *dataSourceArray;
+//语音消息
+@property (nonatomic, strong) NSMutableArray *voiceArray;
 @property (nonatomic, strong) NSString *audioStr;            //录音地址
 @property (nonatomic, copy) NSString *docDirPath;
 @property (nonatomic, copy) NSString *amrFilePath;
 @property (nonatomic, strong) NSMutableArray *audioArray;
-@property (nonatomic, strong) UIButton *btn_voice;            //录音按钮
+@property (nonatomic, strong) UIButton *btn_voice;            //录音播放按钮
 @property (nonatomic, strong) NSMutableArray *voiceBtnArray;      //录音按钮集合
-@property (nonatomic, strong) NSMutableArray *timeArray;
-//对方消息
-@property (nonatomic, strong) NSMutableArray *unReadessageArr;
-@property (nonatomic, strong) NSString *timeJudgeStr;
-
-//tableView刷新
-@property (nonatomic, assign) BOOL allRefreshBool;     //YES:整体刷新   NO:局部刷新
-@property (nonatomic, strong) NSString *fistTimeStr;    //整体刷新后第一个cell时间
+//图片消息
+@property (nonatomic, strong) NSMutableArray *pictureBoolArray;       //网络图片：1   本地图片：2    其他：0
+@property (nonatomic, strong) NSMutableArray *localPictureArray;     //本地图片
+@property (nonatomic, strong) NSMutableArray *webPictureArray;    //网络图片
+@property (nonatomic, strong) NSMutableArray *webThumbnailArray;    //网络图片缩小图，防止刷新本地数据奔溃(历史消息)
+@property (nonatomic, strong) NSMutableArray *webOriginalArray;   //网络图片放大，防止刷新本地数据奔溃(历史消息)
 
 @end
 
 @implementation WZHChtaDetailViewController
 
-#pragma mark ----- 懒加载
+#pragma mark 懒加载
 //表情
 - (WZHEmotionView *)emotionview {
     if (!_emotionview) {
@@ -134,12 +132,6 @@
     }
     return _pictureBoolArray;
 }
-- (NSMutableArray *)unReadessageArr {
-    if (!_unReadessageArr) {
-        _unReadessageArr = [[NSMutableArray alloc] init];
-    }
-    return _unReadessageArr;
-}
 - (NSMutableArray *)timeArray {
     if (!_timeArray) {
         _timeArray = [[NSMutableArray alloc] init];
@@ -179,11 +171,11 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [WZHChatService sharedInstance].compareTimeStr = @"";
     self.navigationItem.title = @"聊天";
+    NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.webOriginalArray.count + self.webThumbnailArray.count;            //解决不执行懒加载，对程序毫无意义
     _voiceBtnArray = [[NSMutableArray alloc] init];
     _fistTimeStr = [NSString string];          //第一个cell的时间加载，用于刷新历史消息
-    NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.webOriginalArray.count + self.webThumbnailArray.count;            //解决不执行懒加载，对程序毫无意义
+    
     [self setNotificationCenter];     //键盘监控
     [self creatTableView];
     [self creatToolBar];           //tooBar控件
@@ -328,51 +320,6 @@
     [_toolBarView addSubview:_btn_press];
 }
 
-#pragma mark - textView代理方法
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    self.toolBarView.toolBarEmotionBtn.selected = NO;
-    [UIView animateWithDuration:0 animations:^{
-        self.btn_press.frame = emotionDownFrame;
-        self.moreView.frame = CGRectMake(0, IPHONE_HEIGHT, 0, 0);
-        self.tableView.height = IPHONE_HEIGHT - self.keyBoardH - self.toolBarView.height - NAV_HEIGHT ;
-        if (self.tableView.contentSize.height > self.tableView.height) {
-            [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height - self.tableView.bounds.size.height + 3) animated:NO];
-        }
-    }];
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-    if (self.toolBarView.textView.contentSize.height <= TextViewH) {
-        self.toolBarView.textView.height = TextViewH;
-    }else if (self.toolBarView.textView.contentSize.height >= 90) {
-        self.toolBarView.textView.height = 90;
-    }else {
-        self.toolBarView.textView.height = self.toolBarView.textView.contentSize.height;
-    }
-    self.toolBarView.height = IPHONE_WIDTH * 10 / 320 + self.toolBarView.textView.height;
-    if (self.keyBoardH < self.emotionview.height) {
-        self.toolBarView.y = IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height - self.emotionview.height;
-    }else {
-        self.toolBarView.y = IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height - self.keyBoardH;
-    }
-    if (textView.text.length > 0) {
-        self.emotionview.sendBtn.selected = YES;
-    }else {
-        self.emotionview.sendBtn.selected = NO;
-    }
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    if ([text isEqualToString:@"\n"]) {
-        NSString *messageText = [[_textView.textStorage getPlainString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        _allRefreshBool = NO;
-        [self nowTimeEqualJudge:[NSDate getNowDate5]];
-        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
-        return NO;
-    }
-    return YES;
-}
-
 #pragma mark - ToolBar代理方法
 - (void)ToolbarEmotionBtnDidClicked:(UIButton *)emotionBtn {
     if (emotionBtn.selected) {
@@ -509,6 +456,68 @@
     [self.view addSubview:pickerV];
 }
 
+#pragma mark - textView代理方法
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    self.toolBarView.toolBarEmotionBtn.selected = NO;
+    [UIView animateWithDuration:0 animations:^{
+        self.btn_press.frame = emotionDownFrame;
+        self.moreView.frame = CGRectMake(0, IPHONE_HEIGHT, 0, 0);
+        self.tableView.height = IPHONE_HEIGHT - self.keyBoardH - self.toolBarView.height - NAV_HEIGHT ;
+        if (self.tableView.contentSize.height > self.tableView.height) {
+            [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height - self.tableView.bounds.size.height + 3) animated:NO];
+        }
+    }];
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    if (self.toolBarView.textView.contentSize.height <= TextViewH) {
+        self.toolBarView.textView.height = TextViewH;
+    }else if (self.toolBarView.textView.contentSize.height >= 90) {
+        self.toolBarView.textView.height = 90;
+    }else {
+        self.toolBarView.textView.height = self.toolBarView.textView.contentSize.height;
+    }
+    self.toolBarView.height = IPHONE_WIDTH * 10 / 320 + self.toolBarView.textView.height;
+    if (self.keyBoardH < self.emotionview.height) {
+        self.toolBarView.y = IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height - self.emotionview.height;
+    }else {
+        self.toolBarView.y = IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height - self.keyBoardH;
+    }
+    if (textView.text.length > 0) {
+        self.emotionview.sendBtn.selected = YES;
+    }else {
+        self.emotionview.sendBtn.selected = NO;
+    }
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        NSString *messageText = [[_textView.textStorage getPlainString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        _allRefreshBool = NO;
+        [self nowTimeEqualJudge:[NSDate getNowDate5]];
+        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - emotionView代理方法
+- (void)emotionView_sBtnDidClick:(UIButton *)btn {
+    if (btn.tag == 3456) {
+        //解析处理
+        NSString *messageText = [[_textView.textStorage getPlainString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        [self nowTimeEqualJudge:[NSDate getNowDate5]];
+        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
+    }else{
+        [self textViewDidChange:self.textView];
+        //判断输入框有内容让发送按钮变颜色
+        if (self.emotionview.IputView.text.length > 0) {
+            self.emotionview.sendBtn.selected = YES;
+        }else{
+            self.emotionview.sendBtn.selected = NO;
+        }
+    }
+}
 
 #pragma mark - 发送消息
 //发送文本消息
@@ -731,24 +740,6 @@
     }
 }
 
-#pragma mark - emotionView代理方法
-- (void)emotionView_sBtnDidClick:(UIButton *)btn {
-    if (btn.tag == 3456) {
-        //解析处理
-        NSString *messageText = [[_textView.textStorage getPlainString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        [self nowTimeEqualJudge:[NSDate getNowDate5]];
-        [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
-    }else{
-        [self textViewDidChange:self.textView];
-        //判断输入框有内容让发送按钮变颜色
-        if (self.emotionview.IputView.text.length > 0) {
-            self.emotionview.sendBtn.selected = YES;
-        }else{
-            self.emotionview.sendBtn.selected = NO;
-        }
-    }
-}
-
 #pragma mark - tableview代理方法和数据源方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.chatTypeArray.count;
@@ -785,7 +776,6 @@
         cell.backgroundColor = EEEEEE;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [_voiceBtnArray addObject:@""];
-        self.firstCellHeight = cell.lab_time.frame.size.height + cell.lab_name.frame.size.height + cell.conversationView.frame.size.height + 31 * ScaleY_Num;
         return cell;
     }else if([typeStr isEqualToString:@"voice"]) {
         static NSString * VoiceID = @"WZHVoiceCell";
@@ -861,7 +851,7 @@
     self.tableView.height = IPHONE_HEIGHT - self.keyBoardH - self.toolBarView.height - NAV_HEIGHT;
 }
 
-#pragma mark ----- 图片放大
+#pragma mark 图片放大
 - (void)PictureOriginalClicked:(UIButton *)pictureBtn {
     NSInteger k = pictureBtn.tag - 501;
     NSString * pictureBoolStr = [NSString stringWithFormat:@"%@",_pictureBoolArray[k]];
@@ -880,7 +870,7 @@
         [[XLImageViewer shareInstanse] showLocalImages:@[savedImagePath] index:0 fromImageContainer:0];
     }
 }
-#pragma mark ----- 语音播放
+#pragma mark 语音播放
 - (void)VoiceClicked:(UIButton *)voiceBtn {
     voiceBtn.selected = !voiceBtn.selected;
     NSLog(@"%ld",voiceBtn.tag);
@@ -939,7 +929,7 @@
     }];
 }
 
-#pragma mark ----- 剔除相同时间
+#pragma mark 剔除相同时间
 - (void)nowTimeEqualJudge:(NSString *)nowStr {
     NSDate * timeDate = [NSDate timeStringToDate:nowStr];
     NSString *requiredString = [timeDate dateToRequiredString1];
@@ -977,7 +967,7 @@
     }
 }
 
-#pragma mark ----- 复制撤销删除收藏
+#pragma mark 复制撤销删除收藏
 - (void)ChatMessageClicked:(UILongPressGestureRecognizer *)longBtn {
     self.alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"撤回",@"删除", nil];
     [_alert show];
@@ -1007,7 +997,7 @@
     }
 }
 
-#pragma mark ----- 语音
+#pragma mark 语音
 - (void)voiceBtnClickDown:(UIButton *)btn {//按下
     _filePath=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *name = [NSString stringWithFormat:@"%d.wav",(int)[NSDate date].timeIntervalSince1970];
@@ -1199,11 +1189,6 @@
     
     UILabel * alertLab = [view viewWithTag:136];
     alertLab.backgroundColor = [UIColor clearColor];
-}
-
-- (void)handleBack:(UIButton *)sender {
-    [self.navigationController popViewControllerAnimated:NO];
-    [_player stop];
 }
 
 @end

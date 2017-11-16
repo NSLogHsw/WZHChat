@@ -12,8 +12,8 @@
 
 @interface AKBaseWithBaseViewController ()<UIGestureRecognizerDelegate>
 
-@property(nonatomic,strong)UIView * navView;
-@property(nonatomic,strong)UIView * titleView;
+@property (nonatomic, strong) UIView * navView;
+@property (nonatomic, strong) UIView * titleView;
 @end
 
 
@@ -39,12 +39,10 @@
     recognizer.delegate = self;
     [self.view addGestureRecognizer:recognizer];
 }
--(void)handleBack:(UIButton *)sender{
+- (void)handleBack:(UIButton *)sender {
     [self.navigationController popViewControllerAnimated:NO];
-    
 }
--(void)onViewTapped:(UITapGestureRecognizer *)gestureRecognizer
-{
+- (void)onViewTapped:(UITapGestureRecognizer *)gestureRecognizer {
     [self.view endEditing:YES];
 }
 

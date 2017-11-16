@@ -61,8 +61,7 @@ void WavWriter::writeHeader(int length) {
     writeInt32(length);
 }
 
-WavWriter::WavWriter(const char *filename, int sampleRate, int bitsPerSample, int channels) 
-{
+WavWriter::WavWriter(const char *filename, int sampleRate, int bitsPerSample, int channels) {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentPath = [paths objectAtIndex:0];
 	NSString *docFilePath = [documentPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%s", filename]];

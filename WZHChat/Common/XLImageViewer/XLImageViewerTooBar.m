@@ -9,22 +9,19 @@
 #import "XLImageViewerTooBar.h"
 
 @implementation XLImageViewerTooBar{
-    
     UILabel *_pageLabel;
-    
     UIButton *_saveButton;
-    
     VoidBlock _saveBlock;
 }
 
--(instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self buildUI];
     }
     return self;
 }
 
--(void)buildUI{
+- (void)buildUI {
     //显示分页的label
     CGFloat viewWidth = 50.0f;
     CGFloat viewHeignt = 28.0f;
@@ -55,25 +52,25 @@
     self.alpha = 0;
 }
 
--(void)saveImageMethod{
+- (void)saveImageMethod {
     _saveBlock();
 }
 
--(void)addSaveBlock:(VoidBlock)saveBlock{
+- (void)addSaveBlock:(VoidBlock)saveBlock {
     _saveBlock = saveBlock;
 }
 
--(void)setText:(NSString *)text{
+- (void)setText:(NSString *)text {
     _pageLabel.text = text;
 }
 
--(void)show{
+- (void)show {
     [UIView animateWithDuration:0.35 animations:^{
         self.alpha = 1;
     }];
 }
 
--(void)hide{
+- (void)hide {
     [UIView animateWithDuration:0.35 animations:^{
         self.alpha = 0;
     }];

@@ -8,8 +8,7 @@
 
 #import "XLImageLoading.h"
 
-@interface XLImageLoading ()
-{
+@interface XLImageLoading () {
     UILabel *_loadingLabel;
     CAShapeLayer* _progressLayer;
 }
@@ -17,40 +16,33 @@
 
 @implementation XLImageLoading
 
-+(XLImageLoading*)showInView:(UIView *)view
-{
++ (XLImageLoading*)showInView:(UIView *)view {
     XLImageLoading *loading = [[XLImageLoading alloc] initWithFrame:view.bounds];
     [view addSubview:loading];
     return loading;
 }
 
-+(XLImageLoading*)showAlertInView:(UIView*)view message:(NSString*)message
-{
++ (XLImageLoading*)showAlertInView:(UIView*)view message:(NSString*)message {
     XLImageLoading *loading = [[XLImageLoading alloc] initWithFrame:view.bounds mesasge:message];
     [view addSubview:loading];
     return loading;
 }
 
-
--(instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self buildLoadingView];
     }
     return self;
 }
 
--(instancetype)initWithFrame:(CGRect)frame mesasge:(NSString*)message
-{
+- (instancetype)initWithFrame:(CGRect)frame mesasge:(NSString*)message {
     if (self = [super initWithFrame:frame]) {
         [self buildAlertView:message];
     }
     return self;
 }
 
-
--(void)buildLoadingView
-{
+- (void)buildLoadingView {
     CGFloat viewWidth = 35.0f;
     _loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewWidth, viewWidth)];
     _loadingLabel.textAlignment = NSTextAlignmentCenter;
@@ -88,8 +80,7 @@
     [_loadingLabel.layer addSublayer:_progressLayer];
 }
 
--(void)buildAlertView:(NSString*)message
-{
+- (void)buildAlertView:(NSString*)message {
     CGFloat alertHeignt = 70.0f;
     CGFloat alertWidth = 120;
     
@@ -118,8 +109,7 @@
     });
 }
 
--(void)setProgress:(CGFloat)progress
-{
+- (void)setProgress:(CGFloat)progress {
     _progress = progress <= 0 ? 0 : progress;
     _progress = progress >= 1 ? 1 : progress;
     
@@ -128,15 +118,12 @@
     _progressLayer.strokeEnd = _progress;
 }
 
-
--(void)show{
+- (void)show {
     self.hidden = false;
 }
 
--(void)hide
-{
+- (void)hide {
     self.hidden = true;
 }
-
 
 @end

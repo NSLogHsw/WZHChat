@@ -135,7 +135,7 @@ static NSMutableAttributedString *_resultStr;
 
 + (NSString *)createEmotionShortStrWithImageName:(NSString *)imageName {
     NSString *type = [NSString string];
-    type = @"TT";
+    type = @"TT";        //因为表情图标大小跟“TT”差不多，对话框适配比较容易
     //    NSString *path = [[NSBundle mainBundle] pathForResource:imageName ofType:type];
     //    NSURL *imageUrl = [NSURL fileURLWithPath:path];
     //    NSString *result = [NSString stringWithFormat:@"<img src='%@' height='%f' width='%f'>",imageUrl.absoluteString,_emotionSize.height,_emotionSize.height];

@@ -18,10 +18,10 @@ typedef void(^VoidBlock)(void);
 
 @property (nonatomic, copy) NSString *text;
 
--(void)addSaveBlock:(VoidBlock)saveBlock;
+- (void)addSaveBlock:(VoidBlock)saveBlock;
 
--(void)show;
+- (void)show;
 
--(void)hide;
+- (void)hide;
 
 @end

@@ -15,8 +15,7 @@ static NSString* cellId = @"XLImageViewerItem";
 //cell之间的间隔
 static CGFloat lineSpacing = 10.0f;
 
-@interface XLImageViewer ()<UICollectionViewDelegate,UICollectionViewDataSource>
-{
+@interface XLImageViewer ()<UICollectionViewDelegate,UICollectionViewDataSource> {
     //滚动的ScrollView
     UICollectionView *_collectionView;
     //第一次加载的位置
@@ -38,8 +37,7 @@ static CGFloat lineSpacing = 10.0f;
 
 @implementation XLImageViewer
 
-+(XLImageViewer*)shareInstanse{
-    
++ (XLImageViewer*)shareInstanse {
     static XLImageViewer *viewer = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -48,8 +46,7 @@ static CGFloat lineSpacing = 10.0f;
     return viewer;
 }
 
--(instancetype)init{
-    
+- (instancetype)init {
     if (self = [super init]) {
         [self buildUI];
     }
@@ -57,7 +54,7 @@ static CGFloat lineSpacing = 10.0f;
 }
 
 //初始化视图
--(void)buildUI{
+- (void)buildUI {
     //设置ImageViewer属性
     self.frame = [UIScreen mainScreen].bounds;
     
@@ -92,13 +89,11 @@ static CGFloat lineSpacing = 10.0f;
 #pragma mark -
 #pragma mark CollectionViewDelegate
 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _imageUrls.count;
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     XLImageViewerItem *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
     //设置属性
     cell.showNetImage = _showNetImages;
@@ -119,7 +114,6 @@ static CGFloat lineSpacing = 10.0f;
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
     _currentIndex = scrollView.contentOffset.x/scrollView.bounds.size.width;
     _toolBar.text = [NSString stringWithFormat:@"%zd/%zd",_currentIndex + 1,_imageUrls.count];
 }
@@ -128,22 +122,17 @@ static CGFloat lineSpacing = 10.0f;
 #pragma mark 功能方法
 
 //显示网络图片方法
--(void)showNetImages:(NSArray <NSString *>*)imageUrls index:(NSInteger)index fromImageContainer:(UIView*)imageContainer{
-    
-    
+- (void)showNetImages:(NSArray <NSString *>*)imageUrls index:(NSInteger)index fromImageContainer:(UIView*)imageContainer {
     _showNetImages = true;
-    
     [self showImages:imageUrls index:index container:imageContainer];
 }
 
--(void)showLocalImages:(NSArray <NSString *>*)imagePathes index:(NSInteger)index fromImageContainer:(UIView*)imageContainer{
-    
+- (void)showLocalImages:(NSArray <NSString *>*)imagePathes index:(NSInteger)index fromImageContainer:(UIView*)imageContainer {
     _showNetImages = false;
-    
     [self showImages:imagePathes index:index container:imageContainer];
 }
 
--(void)showImages:(NSArray<NSString *> *)images index:(NSInteger)index container:(UIView *)container{
+- (void)showImages:(NSArray<NSString *> *)images index:(NSInteger)index container:(UIView *)container {
     //设置图片容器
     _imageContainer = container;
     //设置数据源
@@ -172,7 +161,7 @@ static CGFloat lineSpacing = 10.0f;
 #pragma mark -
 #pragma mark 获取上级ImageView的ContentMode
 
--(UIViewContentMode)imageViewContentMode{
+- (UIViewContentMode)imageViewContentMode {
     UIViewContentMode contentMode = UIViewContentModeScaleToFill;
     if ([_imageContainer isKindOfClass:[UIImageView class]]) {
         contentMode = _imageContainer.contentMode;
@@ -194,7 +183,7 @@ static CGFloat lineSpacing = 10.0f;
 
 #pragma mark -
 #pragma mark 存储图片方法
--(void)saveImage{
+- (void)saveImage {
     XLImageViewerItem *item = (XLImageViewerItem *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_currentIndex inSection:0]];
     [item saveImage];
 }

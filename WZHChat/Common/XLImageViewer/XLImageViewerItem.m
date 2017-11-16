@@ -15,8 +15,7 @@ static CGFloat minZoomScale = 1.0f;
 //最小拖拽返回相应距离
 static CGFloat minPanLength = 100.0f;
 
-@interface XLImageViewerItem ()<UIScrollViewDelegate>
-{
+@interface XLImageViewerItem ()<UIScrollViewDelegate> {
     //ScrollView
     UIScrollView *_scrollView;
     //ImageView
@@ -35,15 +34,14 @@ static CGFloat minPanLength = 100.0f;
 
 @implementation XLImageViewerItem
 
--(instancetype)initWithFrame:(CGRect)frame{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self buildUI];
     }
     return self;
 }
 
--(void)buildUI{
-    
+- (void)buildUI {
     //设置ScrollView 利用ScrollView完成图片的放大功能
     _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _scrollView.delegate = self;
@@ -79,7 +77,7 @@ static CGFloat minPanLength = 100.0f;
 #pragma mark -
 #pragma mark 点击方法
 //双击 放大缩小
--(void)enlargeImageView{
+- (void)enlargeImageView {
     //已经放大后 双击还原 未放大则双击放大
     CGFloat zoomScale = _scrollView.zoomScale != minZoomScale ? minZoomScale : maxZoomScale;
     [_scrollView setZoomScale:zoomScale animated:true];
@@ -87,18 +85,15 @@ static CGFloat minPanLength = 100.0f;
 
 #pragma mark -
 #pragma mark ScrollViewDelegate
--(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return _imageView;
 }
 
--(void)scrollViewDidZoom:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     [self updateImageFrame];
 }
 
--(void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
-{
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
     if (scale != 1) {return;}
     CGFloat height = [self imageViewFrame].size.height > _scrollView.bounds.size.height ? [self imageViewFrame].size.height : _scrollView.bounds.size.height + 1;
     _scrollView.contentSize = CGSizeMake(_imageView.bounds.size.width, height);
@@ -106,10 +101,8 @@ static CGFloat minPanLength = 100.0f;
 
 #pragma mark -
 #pragma mark ImageView设置Frame相关方法
--(void)updateImageFrame
-{
+- (void)updateImageFrame {
     CGRect imageFrame = _imageView.frame;
-    
     if (imageFrame.size.width < self.bounds.size.width) {
         imageFrame.origin.x = (self.bounds.size.width - imageFrame.size.width)/2.0f;
     }else {
@@ -127,8 +120,7 @@ static CGFloat minPanLength = 100.0f;
     }
 }
 
--(CGRect)imageViewFrame
-{
+- (CGRect)imageViewFrame {
     if (!_imageView.image) {
         return _scrollView.bounds;
     }
@@ -141,7 +133,7 @@ static CGFloat minPanLength = 100.0f;
 
 #pragma mark -
 #pragma mark Setter
--(void)setImageUrl:(NSString *)imageUrl{
+- (void)setImageUrl:(NSString *)imageUrl {
     _scrollView.zoomScale = minZoomScale;
     _imageUrl = imageUrl;
     //显示本地图片
@@ -174,8 +166,7 @@ static CGFloat minPanLength = 100.0f;
     }];
 }
 
--(void)setImageViewFrame
-{
+- (void)setImageViewFrame {
     if (!_imageView.image) {return;}
     //这只imageview的图片和范围
     _imageView.frame = [self imageViewFrame];
@@ -184,14 +175,14 @@ static CGFloat minPanLength = 100.0f;
     _scrollView.contentSize = CGSizeMake(_imageView.bounds.size.width, height);
 }
 
--(void)setImageViewContentMode:(UIViewContentMode)imageViewContentMode{
+- (void)setImageViewContentMode:(UIViewContentMode)imageViewContentMode {
     _imageViewContentMode = imageViewContentMode;
     _imageView.contentMode = imageViewContentMode;
 }
 
 #pragma mark -
 #pragma mark Block方法
--(void)addHideBlockStart:(VoidBlock)start finish:(VoidBlock)finish cancle:(VoidBlock)cancle{
+- (void)addHideBlockStart:(VoidBlock)start finish:(VoidBlock)finish cancle:(VoidBlock)cancle {
     _startHideBlock = start;
     _finishHideBlock = finish;
     _cancleideBlock = cancle;
@@ -201,7 +192,7 @@ static CGFloat minPanLength = 100.0f;
 #pragma mark 显示/隐藏动画
 
 //放大动画
--(void)showEnlargeAnimation{
+- (void)showEnlargeAnimation {
     //如果还没加载完成网络图片则不显示动画
     _imageView.frame = _anchorFrame;
     _collectionView.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
@@ -216,7 +207,7 @@ static CGFloat minPanLength = 100.0f;
 }
 
 //缩小动画
--(void)showShrinkDownAnimation{
+- (void)showShrinkDownAnimation {
     _startHideBlock();
     //如果还没加载完成网络图片则不显示动画
     if (_imageView.image) {
@@ -244,7 +235,7 @@ static CGFloat minPanLength = 100.0f;
 
 #pragma mark -
 #pragma mark 拖拽返回方法
--(void)scrollViewPanMethod:(UIPanGestureRecognizer*)pan{
+- (void)scrollViewPanMethod:(UIPanGestureRecognizer*)pan {
     if (_scrollView.zoomScale != 1.0f) {return;}
     if (_scrollView.contentOffset.y > 0) {return;}
     //拖拽结束后判断位置
@@ -280,12 +271,12 @@ static CGFloat minPanLength = 100.0f;
 
 #pragma mark -
 #pragma mark 保存图片
--(void)saveImage{
+- (void)saveImage {
     if (!_imageView.image) {return;}
     UIImageWriteToSavedPhotosAlbum(_imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
 }
 
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error != NULL) {return;}
     [XLImageLoading showAlertInView:self message:@"图片存储成功"];
 }
