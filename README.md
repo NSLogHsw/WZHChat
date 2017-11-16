@@ -21,8 +21,8 @@ http://wx3.sinaimg.cn/large/005OnOYcly1fkvlscvkzjg308w0frx6w.gif
 # Android语音适配问题
 <p>项目在聊天时，Android 发送的语音格式为Android默认的 amr 格式，iOS 发送的格式为iOS默认的 wav 格式转 amr 格式(iOS优先为Android适配，原因是wav文件比较大，amr文件小，传送速度快)。</p>
 <p>Android 接收到 iOS 发送的语音，原则上播放没有问题；iOS 接收到 Android 发送的语音，可能会出现两种情况：</p>
-##<p>1. 播放有杂音；</p>
-##<p>2. 不能播放，原因是 Android 所发送的语音虽然是 amr 格式，其实是 MPEG-4 格式，可以下载下载 mediainfo for Mac ，对比录制的 amr 参数是否一致。</p>
+<p>1. 播放有杂音；</p>
+<p>2. 不能播放，原因是 Android 所发送的语音虽然是 amr 格式，其实是 MPEG-4 格式，可以下载下载 mediainfo for Mac ，对比录制的 amr 参数是否一致。</p>
 <p>以上两种情况，极大可能是因为 Android 中 MediaRecorder 的录制参数有问题以及输出文件格式设置错误，所以只要将 MediaRecorder 的音频设置，设置为 AMR 即可。</p>
 
 <p>Android 端相关参考代码：</p>
