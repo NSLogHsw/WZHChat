@@ -20,7 +20,7 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
-+(UIImage *)stretchableImageWithImgae:(NSString *)name{
++ (UIImage *)stretchableImageWithImgae:(NSString *)name {
     UIImage *normal = [UIImage imageNamed:name];
     CGFloat w = normal.size.width * 0.5;
     CGFloat h = 25 * ScaleY_Num;

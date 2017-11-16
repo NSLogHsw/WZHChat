@@ -23,7 +23,7 @@
 #import "AudioConverter.h"
 
 
-@interface WZHChtaDetailViewController () <UITextViewDelegate,WZHToolBarDelegate,WZHEmotionViewdelegate,WZHMoreWayDelegate,WZHChatMessageDelegate,WZHPictureOriginalDelegate,WZHVoiceDelegate,UIGestureRecognizerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@interface WZHChtaDetailViewController () <UITextViewDelegate,UIGestureRecognizerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,WZHToolBarDelegate,WZHEmotionViewdelegate,WZHMoreWayDelegate,WZHChatMessageDelegate,WZHPictureOriginalDelegate,WZHVoiceDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIButton *emotionBtn;
@@ -37,8 +37,8 @@
 @property (nonatomic, strong) NSMutableArray *voiceArray;
 @property (nonatomic, strong) NSMutableArray *localPictureArray;     //本地图片
 @property (nonatomic, strong) NSMutableArray *webPictureArray;    //网络图片
-@property (nonatomic, strong) NSMutableArray *thumbnailArray;    //网络图片缩小图，防止刷新本地数据奔溃
-@property (nonatomic, strong) NSMutableArray *originalArray;   //网络图片放大，防止刷新本地数据奔溃
+@property (nonatomic, strong) NSMutableArray *webThumbnailArray;    //网络图片缩小图，防止刷新本地数据奔溃
+@property (nonatomic, strong) NSMutableArray *webOriginalArray;   //网络图片放大，防止刷新本地数据奔溃
 @property (nonatomic, strong) UIView *pressView;
 @property (nonatomic, strong) UIButton *btn_press;
 @property (nonatomic, strong) UIView *voiceView;
@@ -154,21 +154,21 @@
 }
 - (NSMutableArray *)audioArray {
     if (!_audioArray) {
-        _audioArray = [NSMutableArray array];
+        _audioArray = [[NSMutableArray alloc] init];
     }
     return _audioArray;
 }
-- (NSMutableArray *)originalArray {
-    if (!_originalArray) {
-        _originalArray = [NSMutableArray array];
+- (NSMutableArray *)webOriginalArray {
+    if (!_webOriginalArray) {
+        _webOriginalArray = [[NSMutableArray alloc] init];
     }
-    return _originalArray;
+    return _webOriginalArray;
 }
-- (NSMutableArray *)thumbnailArray {
-    if (!_thumbnailArray) {
-        _thumbnailArray = [NSMutableArray array];
+- (NSMutableArray *)webThumbnailArray {
+    if (!_webThumbnailArray) {
+        _webThumbnailArray = [[NSMutableArray alloc] init];
     }
-    return _thumbnailArray;
+    return _webThumbnailArray;
 }
 
 - (void)viewDidUnload {
@@ -183,13 +183,11 @@
     self.navigationItem.title = @"聊天";
     _voiceBtnArray = [[NSMutableArray alloc] init];
     _fistTimeStr = [NSString string];          //第一个cell的时间加载，用于刷新历史消息
-    NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.originalArray.count + self.thumbnailArray.count;            //解决不执行懒加载，对程序毫无意义
+    NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.webOriginalArray.count + self.webThumbnailArray.count;            //解决不执行懒加载，对程序毫无意义
     [self setNotificationCenter];     //键盘监控
     [self creatTableView];
     [self creatToolBar];           //tooBar控件
     self.view.backgroundColor = EEEEEE;
-    //    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsCompact];
-    //    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     //录音视图
     self.voiceView = [[UIView alloc] init];
     self.voiceView.backgroundColor = [UIColor clearColor];
@@ -540,8 +538,8 @@
             [self.webPictureArray insertObject:webModel atIndex:0];
             [self.pictureBoolArray insertObject:@"0" atIndex:0];
             [_audioArray insertObject:@"" atIndex:0];
-            [_originalArray insertObject:@"" atIndex:0];
-            [_thumbnailArray insertObject:@"" atIndex:0];
+            [_webOriginalArray insertObject:@"" atIndex:0];
+            [_webThumbnailArray insertObject:@"" atIndex:0];
             
             [self.tableView reloadData];
             self.toolBarView.frame = CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height, IPHONE_WIDTH, self.toolBarView.height);
@@ -558,8 +556,8 @@
             [self.webPictureArray addObject:webModel];
             [self.pictureBoolArray addObject:@"0"];
             [_audioArray addObject:@""];
-            [_originalArray addObject:@""];
-            [_thumbnailArray addObject:@""];
+            [_webOriginalArray addObject:@""];
+            [_webThumbnailArray addObject:@""];
             
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatTypeArray.count - 1 inSection:0];
             [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -603,8 +601,8 @@
         [_localPictureArray insertObject:localModel atIndex:0];
         [_webPictureArray insertObject:webModel atIndex:0];
         [_pictureBoolArray insertObject:@"0" atIndex:0];
-        [_originalArray insertObject:@"" atIndex:0];
-        [_thumbnailArray insertObject:@"" atIndex:0];
+        [_webOriginalArray insertObject:@"" atIndex:0];
+        [_webThumbnailArray insertObject:@"" atIndex:0];
         
         [self.tableView reloadData];
         self.toolBarView.frame = CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height, IPHONE_WIDTH, self.toolBarView.height);
@@ -621,8 +619,8 @@
         [_localPictureArray addObject:localModel];
         [_webPictureArray addObject:webModel];
         [_pictureBoolArray addObject:@"0"];
-        [_originalArray addObject:@""];
-        [_thumbnailArray addObject:@""];
+        [_webOriginalArray addObject:@""];
+        [_webThumbnailArray addObject:@""];
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatTypeArray.count - 1 inSection:0];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -653,8 +651,8 @@
         [_webPictureArray insertObject:webModel atIndex:0];
         [_pictureBoolArray insertObject:@"2" atIndex:0];
         [_audioArray insertObject:@"" atIndex:0];
-        [_originalArray insertObject:@"" atIndex:0];
-        [_thumbnailArray insertObject:@"" atIndex:0];
+        [_webOriginalArray insertObject:@"" atIndex:0];
+        [_webThumbnailArray insertObject:@"" atIndex:0];
         
         [self.tableView reloadData];
         self.toolBarView.frame = CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height, IPHONE_WIDTH, self.toolBarView.height);
@@ -671,8 +669,8 @@
         [_webPictureArray addObject:webModel];
         [_pictureBoolArray addObject:@"2"];
         [_audioArray addObject:@""];
-        [_originalArray addObject:@""];
-        [_thumbnailArray addObject:@""];
+        [_webOriginalArray addObject:@""];
+        [_webThumbnailArray addObject:@""];
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatTypeArray.count - 1 inSection:0];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -706,8 +704,8 @@
         [_webPictureArray insertObject:webModel atIndex:0];
         [_pictureBoolArray insertObject:@"1" atIndex:0];
         [_audioArray insertObject:@"" atIndex:0];
-        [_originalArray insertObject:originalStr atIndex:0];
-        [_thumbnailArray insertObject:thumbnailStr atIndex:0];
+        [_webOriginalArray insertObject:originalStr atIndex:0];
+        [_webThumbnailArray insertObject:thumbnailStr atIndex:0];
         
         [self.tableView reloadData];
         self.toolBarView.frame = CGRectMake(0, IPHONE_HEIGHT - NAV_HEIGHT  - self.toolBarView.height, IPHONE_WIDTH, self.toolBarView.height);
@@ -724,8 +722,8 @@
         [_webPictureArray addObject:webModel];
         [_pictureBoolArray addObject:@"1"];
         [_audioArray addObject:@""];
-        [_originalArray addObject:originalStr];
-        [_thumbnailArray addObject:thumbnailStr];
+        [_webOriginalArray addObject:originalStr];
+        [_webThumbnailArray addObject:thumbnailStr];
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.chatTypeArray.count - 1 inSection:0];
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -756,8 +754,10 @@
     return self.chatTypeArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [_timeArray replaceObjectAtIndex:[_timeArray indexOfObject:_fistTimeStr] withObject:@""];
-//    [_timeArray replaceObjectAtIndex:0 withObject:_fistTimeStr];
+    if (_allRefreshBool == YES) {
+        [_timeArray replaceObjectAtIndex:[_timeArray indexOfObject:_fistTimeStr] withObject:@""];
+        [_timeArray replaceObjectAtIndex:0 withObject:_fistTimeStr];
+    }
     NSString * typeStr = [NSString stringWithFormat:@"%@",_chatTypeArray[indexPath.row]];
     if ([typeStr isEqualToString:@"revocation"]) {
         static NSString * revocationID = @"revocationCell";
@@ -812,7 +812,7 @@
         NSString * pictureBoolStr = [NSString stringWithFormat:@"%@",_pictureBoolArray[k]];
         NSLog(@"pictureBoolStr === %@",pictureBoolStr);
         if ([pictureBoolStr isEqualToString:@"1"]) {
-            [secondCell initWithTime:_timeArray[k] HeaderStr:[_informationArray valueForKey:@"headerStr"][k] Name:[_informationArray valueForKey:@"nameStr"][k] Guest:[_informationArray valueForKey:@"guestStr"][k] thumbnailStr:_thumbnailArray[k] thumbnailImage:nil pictureBool:@"1" PictureTag:k];
+            [secondCell initWithTime:_timeArray[k] HeaderStr:[_informationArray valueForKey:@"headerStr"][k] Name:[_informationArray valueForKey:@"nameStr"][k] Guest:[_informationArray valueForKey:@"guestStr"][k] thumbnailStr:_webThumbnailArray[k] thumbnailImage:nil pictureBool:@"1" PictureTag:k];
         }else if ([pictureBoolStr isEqualToString:@"2"]) {
             [secondCell initWithTime:_timeArray[k] HeaderStr:[_informationArray valueForKey:@"headerStr"][k] Name:[_informationArray valueForKey:@"nameStr"][k] Guest:[_informationArray valueForKey:@"guestStr"][k] thumbnailStr:@"local" thumbnailImage:[_localPictureArray valueForKey:@"thumbnailImage"][k] pictureBool:@"2" PictureTag:k];
         }
@@ -866,7 +866,7 @@
     NSInteger k = pictureBtn.tag - 501;
     NSString * pictureBoolStr = [NSString stringWithFormat:@"%@",_pictureBoolArray[k]];
     if ([pictureBoolStr isEqualToString:@"1"]) {
-        [[XLImageViewer shareInstanse] showNetImages:@[_originalArray[k]] index:0 fromImageContainer:0];
+        [[XLImageViewer shareInstanse] showNetImages:@[_webOriginalArray[k]] index:0 fromImageContainer:0];
     }else if ([pictureBoolStr isEqualToString:@"2"]) {
         UIImage * m_imgFore = [_localPictureArray valueForKey:@"originalImage"][k];
         //png格式

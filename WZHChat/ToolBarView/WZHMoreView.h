@@ -17,9 +17,8 @@
 
 @interface WZHMoreView : UIImageView
 
-@property(assign,nonatomic)id<WZHMoreWayDelegate>delegate;
-@property(strong,nonatomic)UIButton * moreWayButton;
+@property (nonatomic, assign) id<WZHMoreWayDelegate>delegate;
+@property (nonatomic, strong) UIButton *moreWayButton;
 
 @end
-
 

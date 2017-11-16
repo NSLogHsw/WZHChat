@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (extend)
+
 + (CGSize)getSizeByString:(NSString*)string AndFontSize:(CGFloat)font size:(CGSize)maxsize;
-
 + (CGFloat)heightForContentText:(NSString *)string AndFontSize:(CGFloat)font size:(CGSize)maxsize;
-
 + (NSString *)filterHTML:(NSString *)html;
+
 @end

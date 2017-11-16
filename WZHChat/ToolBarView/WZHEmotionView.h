@@ -12,30 +12,22 @@
 
 @protocol WZHEmotionViewdelegate <NSObject>
 
-///发送，删除等按钮的代理事件，用tag值区按钮！
--(void)emotionView_sBtnDidClick:(UIButton *)btn;
-///gif表情的代理事件！
--(void)gifBtnClick:(UIButton *)btn;
-///代理方法，点击表情按钮触发方法
--(void)MoreWayBtnDidClicked:(UIButton *)moreWayBtn;
-
+//发送，删除等按钮的代理事件，用tag值区按钮！
+- (void)emotionView_sBtnDidClick:(UIButton *)btn;
+//gif表情的代理事件！
+- (void)gifBtnClick:(UIButton *)btn;
+//代理方法，点击表情按钮触发方法
+- (void)MoreWayBtnDidClicked:(UIButton *)moreWayBtn;
 
 @end
 
 @interface WZHEmotionView : UIImageView <UIScrollViewDelegate>
 
-///textView，输入框
-@property(nonatomic, strong)UITextView    *IputView;
-///发送按钮
-@property(strong, nonatomic)UIButton      *sendBtn;
-///底部条的按钮
-@property(strong,nonatomic)UIButton       *emojiBtn;
-
-@property(assign,nonatomic) id <WZHEmotionViewdelegate> delegate;
-
-@property(strong,nonatomic)UIButton * moreWayButton;
-
-@property(nonatomic,assign)NSString * number;
+@property (nonatomic, strong) UITextView *IputView;      //textView，输入框
+@property (nonatomic, strong) UIButton *sendBtn;         //发送按钮
+@property (nonatomic, strong) UIButton *emojiBtn;        //底部条的按钮
+@property (nonatomic, assign) id <WZHEmotionViewdelegate> delegate;
+@property (nonatomic, strong) UIButton *moreWayButton;
+@property (nonatomic, strong) NSString *number;
 
 @end
-

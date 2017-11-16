@@ -13,10 +13,8 @@
 
 @implementation WZHToolbarView
 
--(instancetype)init
-{
+- (instancetype)init {
     if (self = [super init]) {
-        
         self.frame = toolBarFrameDown;
         self.userInteractionEnabled = YES;
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, IPHONE_WIDTH, 0.5)];
@@ -57,28 +55,24 @@
         [btn_more setImage:[UIImage imageNamed:@"moreBtton"] forState:UIControlStateNormal];
         [btn_more addTarget:self action:@selector(clickMoreBtton:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btn_more];
-        
     }
     return self;
 }
 
--(void)emotionBtnDidClicked:(UIButton *)emotionBtn
-{
-    
+- (void)emotionBtnDidClicked:(UIButton *)emotionBtn {
     if ([self.delegate respondsToSelector:@selector(ToolbarEmotionBtnDidClicked:)]) {
         [self.delegate ToolbarEmotionBtnDidClicked:emotionBtn];
     }
 }
--(void)clickVoiceBtton:(UIButton *)sender{
+- (void)clickVoiceBtton:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(ToolbarVoiceBtnDidClicked:)]) {
         [self.delegate ToolbarVoiceBtnDidClicked:sender];
     }
 }
--(void)clickMoreBtton:(UIButton *)sender{
+- (void)clickMoreBtton:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(ToolbarMoreBtnDidClicked:)]) {
         [self.delegate ToolbarMoreBtnDidClicked:sender];
     }
 }
 
 @end
-

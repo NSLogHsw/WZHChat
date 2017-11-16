@@ -13,22 +13,11 @@ typedef enum : NSUInteger {
     WZHEmotionTypeGif,
     //静态图
     WZHEmotionTypePng,
-    
 } WZHEmotionType;
 
 @interface WZHTextAttachment : NSTextAttachment
 
-//@property(nonatomic, copy)   NSString *imageName;
-
-///用来记录区分表情
-@property(nonatomic, strong) NSString *emojiTag;
-
-///表情尺寸
-@property(nonatomic, assign) CGSize   emojiSize;
-
-//@property(nonatomic, assign) CGRect   emotionRect;
-
-//@property(nonatomic, assign) WZHEmotionType emotionType;
+@property (nonatomic, strong) NSString *emojiTag;       //用来记录区分表情
+@property (nonatomic, assign) CGSize emojiSize;         //表情尺寸
 
 @end
-

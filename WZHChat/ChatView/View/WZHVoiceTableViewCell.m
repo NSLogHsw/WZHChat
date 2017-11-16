@@ -137,6 +137,7 @@
         [self.delegate VoiceClicked:sender];
     }
 }
+
 -(void)clickChatMessageLongBtn:(UILongPressGestureRecognizer *)gestureRecognizer{
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
         if ([self.delegate respondsToSelector:@selector(ChatMessageClicked:)]) {

@@ -10,8 +10,7 @@
 
 @interface NSAttributedString (WZHEmojiExtension)
 
-///用来获取textview中的字符串
+//用来获取textview中的字符串
 - (NSString *)getPlainString;
 
 @end
-
