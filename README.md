@@ -48,7 +48,7 @@ mMediaRecorder.setAudioEncodingBitRate(64);
 
 
 # 部分截图
-<p>![WZHChat](FlatPatternmaking/00000.png) ![WZHChat](FlatPatternmaking/00001.png)</p>
-<p>![WZHChat](FlatPatternmaking/00002.png) ![WZHChat](FlatPatternmaking/00003.png)</p>
-<p>![WZHChat](FlatPatternmaking/00004.png) ![WZHChat](FlatPatternmaking/00005.png)</p>
-<p>![WZHChat](FlatPatternmaking/00006.jpg)</p>
+![WZHChat](FlatPatternmaking/00000.png) ![WZHChat](FlatPatternmaking/00001.png)
+![WZHChat](FlatPatternmaking/00002.png) ![WZHChat](FlatPatternmaking/00003.png)
+![WZHChat](FlatPatternmaking/00004.png) ![WZHChat](FlatPatternmaking/00005.png)
+![WZHChat](FlatPatternmaking/00006.jpg)
