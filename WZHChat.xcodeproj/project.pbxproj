@@ -32,6 +32,7 @@
 		F7802EFF1F96E6AD005DFE80 /* WZHEmotionTags.plist in Resources */ = {isa = PBXBuildFile; fileRef = F7802EF41F96E6AD005DFE80 /* WZHEmotionTags.plist */; };
 		F7802F001F96E6AD005DFE80 /* WZHEmotionLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F7802EF71F96E6AD005DFE80 /* WZHEmotionLabel.m */; };
 		F7802F041F96E8D6005DFE80 /* AKBaseWithBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7802F021F96E8D6005DFE80 /* AKBaseWithBaseViewController.m */; };
+		F78AE1251FBD41C8003970F4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F78AE1241FBD41C8003970F4 /* README.md */; };
 		F7BE80561FA17418008416A0 /* WZHPictureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7BE80501FA17417008416A0 /* WZHPictureTableViewCell.m */; };
 		F7BE80571FA17418008416A0 /* WZHVoiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7BE80511FA17417008416A0 /* WZHVoiceTableViewCell.m */; };
 		F7BE80581FA17418008416A0 /* WZHChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7BE80531FA17418008416A0 /* WZHChatViewCell.m */; };
@@ -174,6 +175,7 @@
 		F7802F011F96E85E005DFE80 /* WZHPrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WZHPrefixHeader.pch; sourceTree = "<group>"; };
 		F7802F021F96E8D6005DFE80 /* AKBaseWithBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBaseWithBaseViewController.m; sourceTree = "<group>"; };
 		F7802F031F96E8D6005DFE80 /* AKBaseWithBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBaseWithBaseViewController.h; sourceTree = "<group>"; };
+		F78AE1241FBD41C8003970F4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		F7BE80501FA17417008416A0 /* WZHPictureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZHPictureTableViewCell.m; sourceTree = "<group>"; };
 		F7BE80511FA17417008416A0 /* WZHVoiceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZHVoiceTableViewCell.m; sourceTree = "<group>"; };
 		F7BE80521FA17417008416A0 /* WZHChatViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZHChatViewCell.h; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 			isa = PBXGroup;
 			children = (
 				F7802F011F96E85E005DFE80 /* WZHPrefixHeader.pch */,
+				F78AE1241FBD41C8003970F4 /* README.md */,
 				F7802EC31F96E56F005DFE80 /* AppDelegate.h */,
 				F7802EC61F96E56F005DFE80 /* AppDelegate.m */,
 				F7802F031F96E8D6005DFE80 /* AKBaseWithBaseViewController.h */,
@@ -812,6 +815,7 @@
 				F7BE80F61FA179F4008416A0 /* VideoOverlay@2x.png in Resources */,
 				F7BE80FA1FA179F4008416A0 /* ImageSelectedSmallOff@2x.png in Resources */,
 				F7BE81101FA179F4008416A0 /* ImageSelectedOn@2x.png in Resources */,
+				F78AE1251FBD41C8003970F4 /* README.md in Resources */,
 				F7BE81051FA179F4008416A0 /* ImageSelectedOff@2x.png in Resources */,
 				F7BE80FE1FA179F4008416A0 /* PlayButtonOverlayLargeTap@3x.png in Resources */,
 				F7BE80F21FA179F4008416A0 /* UIBarButtonItemGrid@3x.png in Resources */,
