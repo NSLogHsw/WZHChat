@@ -1,7 +1,7 @@
 # WZHChat
 
 # 简介
-此demo为微信聊天界面，基于 Objective-C 语言及 MVC 框架实现。
+此demo为微信聊天界面，基于 Objective-C 语言及 MVC 框架实现，适用于GCDAsyncSocket实现即时通信。
 
 有什么问题可以跟我交流，本人QQ：905640505，顺便求⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️~（网页右上角：🌟Star）
 
