@@ -105,13 +105,13 @@
         _lab_name.text = nameStr;
         _lab_name.frame = CGRectMake(45 * ScaleX_Num, CGRectGetMaxY(self.lab_time.frame) + 6 * ScaleY_Num, IPHONE_WIDTH / 2, 12 * ScaleY_Num);
         _headerView.frame = CGRectMake(10 * ScaleX_Num,CGRectGetMaxY(self.lab_time.frame) + 10 * ScaleY_Num, 30 * ScaleX_Num, 30 * ScaleX_Num);
-        _conversationView.frame = CGRectMake(43 * ScaleX_Num, CGRectGetMaxY(_lab_name.frame) + 1 * ScaleY_Num, width + 50 * ScaleX_Num, 30 * ScaleY_Num);
+        _conversationView.frame = CGRectMake(43 * ScaleX_Num, CGRectGetMaxY(_lab_name.frame) + 1 * ScaleY_Num, width + 24 * ScaleX_Num, 30 * ScaleY_Num);
         _conversationView.image = [UIImage stretchableImageWithImgae:@"chatBackgroundGuest"];
         [_btn_voice setImage:[UIImage imageNamed:@"left-3"] forState:(UIControlStateNormal)];
         [_btn_voice setImage:[UIImage imageNamed:@"left-3"] forState:UIControlStateHighlighted];
-        [_btn_voice setImageEdgeInsets:UIEdgeInsetsMake(0, -(width / 2) - 5 * ScaleX_Num, 0, (width / 2) + 5 * ScaleX_Num)];
-        _btn_voice.frame = CGRectMake(43 * ScaleX_Num, CGRectGetMaxY(_lab_name.frame) + 1 * ScaleY_Num, width + 50 * ScaleX_Num, 30 * ScaleY_Num);
-        _lab_currentRecordTime.frame = CGRectMake(CGRectGetMaxX(_btn_voice.frame) + 10 * ScaleX_Num, CGRectGetMaxY(_lab_name.frame) + 1 * ScaleY_Num, 50 * ScaleX_Num, 30 * ScaleY_Num);
+        [_btn_voice setImageEdgeInsets:UIEdgeInsetsMake(0, -(width / 2) + 15 * ScaleX_Num, 0, (width / 2) + 1 * ScaleX_Num)];
+        _btn_voice.frame = CGRectMake(43 * ScaleX_Num, CGRectGetMaxY(_lab_name.frame) + 1 * ScaleY_Num, width + 24 * ScaleX_Num, 30 * ScaleY_Num);
+        _lab_currentRecordTime.frame = CGRectMake(CGRectGetMaxX(_btn_voice.frame) + 5 * ScaleX_Num, CGRectGetMaxY(_lab_name.frame) + 1 * ScaleY_Num, 50 * ScaleX_Num, 30 * ScaleY_Num);
         _lab_currentRecordTime.textAlignment = NSTextAlignmentLeft;
     }else if ([guestStr isEqual:@"0"]) {
         _lab_name.text = @"";

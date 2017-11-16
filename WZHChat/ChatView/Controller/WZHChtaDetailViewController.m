@@ -1073,7 +1073,7 @@
     recordView.backgroundColor = [UIColor clearColor];
     recordView.tag = 101;
     
-    UIImageView * micImg = [[UIImageView alloc]initWithFrame:CGRectMake(25 * ScaleX_Num, -20 * ScaleY_Num,100 * ScaleX_Num, 180 * ScaleY_Num)];
+    UIImageView * micImg = [[UIImageView alloc]initWithFrame:CGRectMake(25 * ScaleX_Num, -20 * ScaleY_Num, 100 * ScaleX_Num, 180 * ScaleY_Num)];
     micImg.contentMode = UIViewContentModeLeft;
     [micImg setImage:[UIImage imageNamed:@"voice_1"]];
     micImg.tag = 135;
@@ -1081,7 +1081,8 @@
     self.voiceFloat = 0;
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(voiceChange:) userInfo:nil repeats:YES];
     
-    UIImageView * micImgCan = [[UIImageView alloc]initWithFrame:CGRectMake(50 * ScaleX_Num, 30 * ScaleY_Num,50 * ScaleX_Num, 70 * ScaleY_Num)];
+    UIImageView * micImgCan = [[UIImageView alloc]initWithFrame:CGRectMake(25 * ScaleX_Num, -20 * ScaleY_Num, 100 * ScaleX_Num, 180 * ScaleY_Num)];
+    micImgCan.contentMode = UIViewContentModeLeft;
     micImgCan.image = [UIImage imageNamed:@"cancelVoice"];
     micImgCan.tag = 134;
     
@@ -1090,11 +1091,9 @@
     
     [recordView addSubview:micImg];
     [recordView addSubview:micImgCan];
-    [UIView animateWithDuration:0 animations:^{
-        self.voiceView.frame = CGRectMake(0, 0, 150 * ScaleX_Num, 150 * ScaleX_Num);
-        self.voiceView.center = CGPointMake(IPHONE_WIDTH / 2, (IPHONE_HEIGHT - 2 * NAV_HEIGHT) / 2);
-        [self.voiceView addSubview:recordView];
-    }];
+    self.voiceView.frame = CGRectMake(0, 0, 150 * ScaleX_Num, 150 * ScaleX_Num);
+    self.voiceView.center = CGPointMake(IPHONE_WIDTH / 2, (IPHONE_HEIGHT - 2 * NAV_HEIGHT) / 2);
+    [self.voiceView addSubview:recordView];
 }
 
 - (void)voiceChange:(NSTimer *)timer {
@@ -1103,26 +1102,52 @@
     [_record updateMeters];//刷新音量数据
     CGFloat lowPassResults = pow(10, (0.05 * [_record peakPowerForChannel:0]));
     //  根据音量大小选择显示图片  图片 小-》大
-    if (0<lowPassResults<=0.18) {
+    NSLog(@"%f",lowPassResults);
+    if (0.01 < lowPassResults <=0.05) {
         [micImg setImage:[UIImage imageNamed:@"voice_1"]];
-    }else if (0.18<lowPassResults<=0.36) {
+    }else if (0.05 < lowPassResults <=0.1) {
+        [micImg setImage:[UIImage imageNamed:@"voice_1"]];
+    }else if (0.1 < lowPassResults <=0.15) {
         [micImg setImage:[UIImage imageNamed:@"voice_2"]];
-    }else if (0.36<lowPassResults<=0.54) {
+    }else if (0.15 < lowPassResults <=0.2) {
+        [micImg setImage:[UIImage imageNamed:@"voice_2"]];
+    }else if (0.2 < lowPassResults <=0.25) {
         [micImg setImage:[UIImage imageNamed:@"voice_3"]];
-    }else if (0.54<lowPassResults<=0.72) {
+    }else if (0.25 < lowPassResults <=0.3) {
+        [micImg setImage:[UIImage imageNamed:@"voice_2"]];
+    }else if (0.3 < lowPassResults <=0.35) {
+        [micImg setImage:[UIImage imageNamed:@"voice_3"]];
+    }else if (0.35 < lowPassResults <=0.4) {
+        [micImg setImage:[UIImage imageNamed:@"voice_2"]];
+    }else if (0.4 < lowPassResults <=0.45) {
+        [micImg setImage:[UIImage imageNamed:@"voice_3"]];
+    }else if (0.45 < lowPassResults <=0.5) {
+        [micImg setImage:[UIImage imageNamed:@"voice_2"]];
+    }else if (0.5 < lowPassResults <=0.55) {
+        [micImg setImage:[UIImage imageNamed:@"voice_3"]];
+    }else if (0.55 < lowPassResults <=0.6) {
         [micImg setImage:[UIImage imageNamed:@"voice_4"]];
-    }else if (0.72<lowPassResults<=0.90) {
+    }else if (0.6 < lowPassResults <=0.65) {
+        [micImg setImage:[UIImage imageNamed:@"voice_3"]];
+    }else if (0.65 < lowPassResults <=0.7) {
+        [micImg setImage:[UIImage imageNamed:@"voice_4"]];
+    }else if (0.7 < lowPassResults <=0.75) {
+        [micImg setImage:[UIImage imageNamed:@"voice_3"]];
+    }else if (0.75 < lowPassResults <=0.8) {
+        [micImg setImage:[UIImage imageNamed:@"voice_4"]];
+    }else if (0.8 < lowPassResults <=0.85) {
         [micImg setImage:[UIImage imageNamed:@"voice_5"]];
-    }else if (0.90<lowPassResults) {
+    }else if (0.85 < lowPassResults <=0.9) {
+        [micImg setImage:[UIImage imageNamed:@"voice_4"]];
+    }else if (0.9 < lowPassResults <=0.95) {
+        [micImg setImage:[UIImage imageNamed:@"voice_5"]];
+    }else if (lowPassResults > 0.95) {
         [micImg setImage:[UIImage imageNamed:@"voice_6"]];
     }
     _voiceFloat = _voiceFloat + 0.1;
 }
 
 - (void)voiceBtnClickCancel:(UIButton *)btn {//意外取消
-    [UIView animateWithDuration:0 animations:^{
-        self.voiceView.frame = emotionDownFrame;
-    }];
     NSLog(@"意外取消");
     [btn setTitle:@"松开 结束" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
@@ -1139,28 +1164,35 @@
     _timer=nil;
 }
 - (void)voiceBtnClickUpInside:(UIButton *)btn {//点击(录音完成)
-    [UIView animateWithDuration:0 animations:^{
-        self.voiceView.frame = emotionDownFrame;
-    }];
     NSLog(@"_filePath === %@  count == %f",_filePath,_voiceFloat);
-    
+    UIView * view = [self.view viewWithTag:101];
     NSString *amrSavePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *name = [NSString stringWithFormat:@"%d.amr",(int)[NSDate date].timeIntervalSince1970];
     amrSavePath=[amrSavePath stringByAppendingPathComponent:name];
+    NSLog(@"点击");
+    
     [AudioConverter convertWavToAmrAtPath:_filePath amrSavePath:amrSavePath asynchronize:YES completion:^(BOOL success, NSString * _Nullable resultPath) {
         if (success) {
-            int result = (int)roundf(_voiceFloat);      //时间四舍五入
-            if (result > 1) {
+            if (_voiceFloat < 1) {
+                UIImageView * micImg = [view viewWithTag:135];
+                micImg.hidden = YES;
+                UIImageView * micImgCan = [view viewWithTag:134];
+                [micImgCan setImage:[UIImage imageNamed:@"voiceShort"]];
+                micImgCan.hidden = NO;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [view removeFromSuperview];
+                });
+            }else {
+                [view removeFromSuperview];
+                int result = (int)roundf(_voiceFloat);      //时间四舍五入
                 _allRefreshBool = NO;
                 [self nowTimeEqualJudge:[NSDate getNowDate5]];
                 [self sendVoiceMessageWithFilePathStr:amrSavePath VoiceTimeStr:[NSString stringWithFormat:@"%d",result] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:[NSString stringWithFormat:@"%d",random_Num] MemberId:MEMBERID InformationId:@""];
             }
         }
     }];
-    NSLog(@"点击");
+    
     [btn setTitle:@"按住 说话" forState:UIControlStateNormal];
-    UIView * view = [self.view viewWithTag:101];
-    [view removeFromSuperview];
     [_record stop];
     if (_timer.isValid) {
         [_timer invalidate];
@@ -1169,9 +1201,6 @@
 }
 
 - (void)voiceBtnClickDragExit:(UIButton *)btn {//拖出
-    [UIView animateWithDuration:0 animations:^{
-        self.voiceView.frame = emotionDownFrame;
-    }];
     NSLog(@"拖出");
     [btn setTitle:@"按住 说话" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
@@ -1179,15 +1208,9 @@
     micImg.hidden = YES;
     UIImageView * micImgCan = [view viewWithTag:134];
     micImgCan.hidden = NO;
-    
-    UILabel * alertLab = [view viewWithTag:136];
-    alertLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:128/255.0 blue:158/255.0 alpha:1];
 }
 
 - (void)voiceBtnClickUpOutside:(UIButton *)btn {//外部手势抬起
-    [UIView animateWithDuration:0 animations:^{
-        self.voiceView.frame = emotionDownFrame;
-    }];
     NSLog(@"外部手势抬起");
     [btn setTitle:@"按住 说话" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
@@ -1204,9 +1227,6 @@
 }
 
 - (void)voiceBtnClickDragEnter:(UIButton *)btn {//拖回
-    [UIView animateWithDuration:0 animations:^{
-        self.voiceView.frame = emotionDownFrame;
-    }];
     NSLog(@"拖回");
     [btn setTitle:@"松开 结束" forState:UIControlStateNormal];
     UIView * view = [self.view viewWithTag:101];
@@ -1216,8 +1236,6 @@
     UIImageView * micImgCan = [view viewWithTag:134];
     micImgCan.hidden = YES;
     
-    UILabel * alertLab = [view viewWithTag:136];
-    alertLab.backgroundColor = [UIColor clearColor];
 }
 
 @end
