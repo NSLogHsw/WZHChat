@@ -202,7 +202,13 @@
         NSLog(@"创建表失败");
     }
     self.hostory_Num = 1;
+    FMResultSet *resultSet = [self.originalData executeQuery:@"SELECT * FROM t_Contacts ORDER BY id DESC"];
     self.hostory_Id = 1000;
+    while (resultSet.next) {
+        _hostory_Id = [[resultSet objectForColumn:@"id"] intValue] + 1;
+        break;
+    }
+    NSLog(@"_hostory_Id === %ld",_hostory_Id);
     self.navigationItem.title = @"聊天";
     NSInteger a = self.informationArray.count + self.dataSourceArray.count  + self.localPictureArray.count  + self.chatTypeArray.count  + self.voiceArray.count  + self.webPictureArray.count  + self.pictureBoolArray.count + self.timeArray.count + self.voiceBtnArray.count + self.audioArray.count + self.webOriginalArray.count + self.webThumbnailArray.count + self.historyGatherArr.count;            //解决不执行懒加载，对程序毫无意义
     _voiceBtnArray = [[NSMutableArray alloc] init];
@@ -212,6 +218,7 @@
     [self setNotificationCenter];     //键盘监控
     [self creatTableView];
     [self creatToolBar];           //tooBar控件
+    [self addNavRightBtton];
     self.view.backgroundColor = EEEEEE;
     //录音视图
     self.voiceView = [[UIView alloc] init];
@@ -1410,6 +1417,44 @@
     
     UIImageView * micImgCan = [view viewWithTag:134];
     micImgCan.hidden = YES;
+    
+}
+
+#pragma mark ----- nav右按钮
+- (void)addNavRightBtton {
+    UIButton * btn_navRight = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn_navRight.frame = CGRectMake(0, 0, 50 * ScaleX_Num, 16 * ScaleY_Num);
+    [btn_navRight setTitle:@"清除历史记录" forState:UIControlStateNormal];
+    btn_navRight.titleLabel.font = UIFONT_SYS(10);
+    [btn_navRight addTarget:self action:@selector(clickNacRightBtn) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn_navRight];
+}
+- (void)clickNacRightBtn {
+    [_informationArray removeAllObjects];
+    [_audioArray removeAllObjects];
+    [_voiceArray removeAllObjects];
+    [_chatTypeArray removeAllObjects];
+    [_dataSourceArray removeAllObjects];
+    [_localPictureArray removeAllObjects];
+    [_webPictureArray removeAllObjects];
+    [_pictureBoolArray removeAllObjects];
+    [_webOriginalArray removeAllObjects];
+    [self.tableView reloadData];
+    
+    //如果表格存在 则销毁
+    BOOL result = [_originalData executeUpdate:@"drop table if exists t_Contacts"];
+    if (result) {
+        NSLog(@"删除表成功");
+        BOOL result1 = [_originalData executeUpdate:@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"];
+        if (result1) {
+            NSLog(@"创建表成功");
+        } else {
+            NSLog(@"创建表失败");
+        }
+        _hostory_Id = 1000;
+    } else {
+        NSLog(@"删除表失败");
+    }
     
 }
 
