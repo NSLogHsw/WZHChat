@@ -30,8 +30,8 @@
 
 #define UIFONT_SYS(fontsize) [UIFont systemFontOfSize:(fontsize)]
 
-#define HEADERIMAGE    @"http://img5.imgtn.bdimg.com/it/u=1712317116,2031280619&fm=27&gp=0.jpg"       //主人头像
-#define GUESTHEADERIMAGE    @"http://img5.imgtn.bdimg.com/it/u=1712317116,2031280619&fm=27&gp=0.jpg"       //嘉宾头像
+#define HEADERIMAGE    @"http://img.dongqiudi.com/uploads/avatar/2015/07/25/QM387nh7As_thumb_1437790672318.jpg"       //主人头像
+#define GUESTHEADERIMAGE    @"http://img0.imgtn.bdimg.com/it/u=586723545,3678636448&fm=214&gp=0.jpg"       //嘉宾头像
 #define MEMBERID @"100"    //主人id
 #define GUESTMEMBERID   @"200"    //嘉宾id
 #define random_Num  (arc4random() % 2)    //嘉宾：1    主人：0
