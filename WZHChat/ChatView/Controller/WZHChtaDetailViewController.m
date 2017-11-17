@@ -265,8 +265,52 @@
     tap.delegate = self;
     [tableview addGestureRecognizer:tap];
 }
+- (void)requestData {
+    /**
+     预留socket消息传入，一般为对方消息，传入之后必须做两个实现：
+     1、存入数据库（见 [self historyMessage] 讲解方法）
+     2、实现UI讲解
+     [self sendMessageWithText:<#(NSString *)#> TimeStr:<#(NSString *)#> NameStr:<#(NSString *)#> HeaderStr:<#(NSString *)#> GuestStr:<#(NSString *)#> MemberId:<#(NSString *)#> InformationId:<#(NSString *)#>]      //文本消息UI
+     [self sendVoiceMessageWithFilePathStr:<#(NSString *)#> VoiceTimeStr:<#(NSString *)#> TimeStr:<#(NSString *)#> NameStr:<#(NSString *)#> HeaderStr:<#(NSString *)#> GuestStr:<#(NSString *)#> MemberId:<#(NSString *)#> InformationId:<#(NSString *)#>]     //语音消息UI
+     [self sendWebPictureMessageWithLocalStr:<#(NSString *)#> OriginalStr:<#(NSString *)#> ThumbnailStr:<#(NSString *)#> TimeStr:<#(NSString *)#> NameStr:<#(NSString *)#> HeaderStr:<#(NSString *)#> GuestStr:<#(NSString *)#> MemberId:<#(NSString *)#> InformationId:<#(NSString *)#>]    //网络图片UI
+     
+     其中
+     Text：文本消息内容
+     TimeStr：消息时间（北京时间）
+     NameStr：用户昵称
+     HeaderStr：用户头像
+     GuestStr：是否为嘉宾，主人传"0",客人（嘉宾）传"1"
+     MemberId：用户Id
+     InformationId：消息Id，可能会用于消息撤回删除接口传入id值
+     FilePathStr：语音消息
+     VoiceTimeStr：语音消息时长
+     LocalStr：区分是否为网络图片，网络图片传"0"，本地图片传"1"
+     OriginalStr：网络图片消息缩略图链接
+     ThumbnailStr：网络图片消息放大图链接
+     
+     还有：self.allRefreshBool = YES;    //为历史全局刷新；如果加载单条消息，请self.allRefreshBool改为NO,为局部刷新
+     **/
+    
+}
 
 - (void)historyMessage {
+    /**
+    先在这里编写加载网络历史消息，存入数据库即可，不需要实现UI
+    讲解@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"
+     id:  消息ID，可能会用于消息撤回删除接口id值
+     type:  文本消息 = @"1"     图片消息 = @"2"    语音消息 = @"3"
+     icon:  用户头像
+     name:  用户昵称
+     fromId:   消息来自某人Id
+     toId:     消息发给对方Id
+     createTime:   消息时间（北京时间）
+     content:   文本消息内容
+     audioTimeSecond:    语音消息时长
+     audio:    语音消息链接
+     thumbnail:   图片消息缩略图链接
+     original:    图片消息放大图链接
+    **/
+    
     //查询整个表
     FMResultSet * resultSet = [self.originalData executeQuery:@"SELECT * FROM t_Contacts ORDER BY id DESC"];
     int i = 0;
@@ -287,7 +331,7 @@
         NSLog(@"idStr ==== %@ \n",idStr);
         
         if (i < _hostory_Num * 5) {
-            self.allRefreshBool = YES;
+            self.allRefreshBool = YES;    //全局刷新
             NSInteger typeStr = [[resultSet objectForColumn:@"type"] intValue];
             NSInteger fromIdStr = [[resultSet objectForColumn:@"fromId"] intValue];
             NSInteger message_Num = [MEMBERID intValue];
@@ -544,6 +588,10 @@
                 
                 [self sendLocalPictureMessageWithLocalStr:@"1" OriginalImage:model.image ThumbnailImage:model.image TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
                 
+                /*
+                 发送消息到服务器接口预留位置
+                 */
+                
                 //@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"
                 // 创建插入语句
                 NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -573,6 +621,10 @@
                 self.cameraSelectImage = model.image;
                 NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
                 [self sendLocalPictureMessageWithLocalStr:@"1" OriginalImage:model.image ThumbnailImage:model.image TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+                
+                /*
+                 发送消息到服务器接口预留位置
+                 */
                 
                 //@"CREATE TABLE IF NOT EXISTS t_Contacts (id text NOT NULL, type text NOT NULL, icon text NOT NULL, name text NOT NULL, fromId text NOT NULL, toId text NOT NULL, createTime text NOT NULL, content text NOT NULL, audioTimeSecond text NOT NULL, audio text NOT NULL, thumbnail text NOT NULL, original text NOT NULL);"
                 // 创建插入语句
@@ -636,6 +688,11 @@
         [self nowTimeEqualJudge:[NSDate getNowDate5]];
         NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
         [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+        
+        /*
+         发送消息到服务器接口预留位置
+         */
+        
         // 创建插入语句
         NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         BOOL result1;
@@ -663,6 +720,11 @@
         [self nowTimeEqualJudge:[NSDate getNowDate5]];
         NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
         [self sendMessageWithText:messageText TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+        
+        /*
+         发送消息到服务器接口预留位置
+         */
+        
         // 创建插入语句
         NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         BOOL result1;
@@ -767,6 +829,11 @@
     WZHVoiceMessage * voiceModel = [[WZHVoiceMessage alloc] init];
     WZHLocalPictureMessage * localModel = [[WZHLocalPictureMessage alloc] init];
     WZHWebPictureMessage * webModel = [[WZHWebPictureMessage alloc] init];
+    
+    
+    /**
+     如果你的语音全部为网络语音，请在此下载网络语音，并保存本地，保留本地连接，voiceModel.filePathStr、_audioArray传入本地链接
+     **/
 
     voiceModel.filePathStr = filePathStr;
     voiceModel.voiceTimeStr = voiceTimeStr;
@@ -1355,7 +1422,13 @@
                 _allRefreshBool = NO;
                 [self nowTimeEqualJudge:[NSDate getNowDate5]];
                 NSString * guestStr = [NSString stringWithFormat:@"%d",random_Num];
-                [self sendVoiceMessageWithFilePathStr:amrSavePath VoiceTimeStr:[NSString stringWithFormat:@"%d",result] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];
+                [self sendVoiceMessageWithFilePathStr:amrSavePath VoiceTimeStr:[NSString stringWithFormat:@"%d",result] TimeStr:@"" NameStr:@"WOHANGO" HeaderStr:HEADERIMAGE GuestStr:guestStr MemberId:MEMBERID InformationId:@""];     //做网络接口的时候可能要删除掉此代码
+                
+                /*
+                 发送消息到服务器接口预留位置，建议：先把语音消息发到服务器，再由服务器获取语音网络连接，再加载语音消息UI，不然实现的时候要判断是语音消息还是本地消息
+                 [self sendVoiceMessageWithFilePathStr:<#(NSString *)#> VoiceTimeStr:<#(NSString *)#> TimeStr:<#(NSString *)#> NameStr:<#(NSString *)#> HeaderStr:<#(NSString *)#> GuestStr:<#(NSString *)#> MemberId:<#(NSString *)#> InformationId:<#(NSString *)#>]
+                 */
+                
                 // 创建插入语句
                 NSString *insertSql = @"insert into t_Contacts(id, type, icon, name, fromId, toId, createTime, content, audioTimeSecond, audio, thumbnail, original) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 BOOL result1;
